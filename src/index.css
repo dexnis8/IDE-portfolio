@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-editor-bg-primary font-mono text-editor-text-primary antialiased;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-editor-bg-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded bg-editor-accent-secondary hover:bg-editor-accent-primary;
+  }
+
+  /* Selection color */
+  ::selection {
+    @apply bg-editor-accent-primary/30 text-editor-text-primary;
+  }
+}
+
+/* Monaco Editor customizations */
+.monaco-editor .margin {
+  @apply bg-editor-bg-primary;
+}
+
+.monaco-editor .minimap {
+  @apply opacity-50;
+}
