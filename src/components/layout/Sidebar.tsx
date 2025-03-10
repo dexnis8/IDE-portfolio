@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaUser, FaCode, FaBriefcase, FaEnvelope } from "react-icons/fa";
 import { IoLogoGithub, IoLogoLinkedin } from "react-icons/io5";
+import { RiTwitterXFill } from "react-icons/ri";
 
 interface NavItem {
   path: string;
@@ -33,14 +34,19 @@ const navItems: NavItem[] = [
 
 const socialLinks = [
   {
-    href: "https://github.com/yourusername",
+    href: "https://github.com/dexnis8",
     icon: <IoLogoGithub />,
     label: "GitHub",
   },
   {
-    href: "https://linkedin.com/in/yourusername",
+    href: "https://linkedin.com/in/isaac-ayorinde",
     icon: <IoLogoLinkedin />,
     label: "LinkedIn",
+  },
+  {
+    href: "https://x.com/dexnis8",
+    icon: <RiTwitterXFill />,
+    label: "X (Twitter)",
   },
 ];
 

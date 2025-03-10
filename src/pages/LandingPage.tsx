@@ -5,12 +5,12 @@ import { motion } from "framer-motion";
 import {
   FaGithub,
   FaLinkedin,
-  FaTwitter,
   FaCode,
-  FaDownload,
   FaEnvelope,
   FaMapMarkerAlt,
+  FaEye,
 } from "react-icons/fa";
+import { RiTwitterXFill } from "react-icons/ri";
 
 export default function LandingPage() {
   const { setViewMode } = useViewMode();
@@ -63,7 +63,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
       {/* Hero Section */}
-      <section className="relative flex h-screen flex-col items-center justify-center overflow-hidden px-4 text-center">
+      <section className="relative flex h-screen flex-col items-center justify-center overflow- px-4 text-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -98,7 +98,7 @@ export default function LandingPage() {
           className="z-10 max-w-4xl"
         >
           <motion.div
-            className="mb-6 mx-auto h-40 w-40 overflow-hidden rounded-full border-4 border-editor-accent-primary shadow-xl"
+            className="mb-6 mx-auto mt-10 h-40 w-40 overflow-hidden rounded-full border-4 border-editor-accent-primary shadow-xl"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{
@@ -109,7 +109,7 @@ export default function LandingPage() {
             }}
           >
             <img
-              src="/avatar.jpg" // Add your profile picture to public folder
+              src="/isaac.jpg" // Add your profile picture to public folder
               alt="Isaac Ayorinde"
               className="h-full w-full object-cover"
               onError={(e) => {
@@ -125,20 +125,24 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            <span className="text-editor-accent-primary">Hello, I'm </span>
-            <TypeAnimation
-              sequence={[
-                "Isaac Ayorinde",
-                1000,
-                "a Full Stack Developer",
-                1000,
-                "a Blockchain Researcher",
-                1000,
-              ]}
-              wrapper="span"
-              speed={50}
-              repeat={Infinity}
-            />
+            <span className="text-editor-accent-primary">Hello, I'm </span>{" "}
+            <br />
+            <span className="inline-block min-w-[320px] md:min-w-[450px] text-center">
+              <TypeAnimation
+                sequence={[
+                  "Isaac Ayorinde",
+                  1000,
+                  "a Full Stack Developer",
+                  1000,
+                  "a Blockchain Researcher",
+                  1000,
+                ]}
+                wrapper="span"
+                speed={1}
+                repeat={Infinity}
+                style={{ display: "inline-block" }}
+              />
+            </span>
           </motion.h1>
 
           <motion.p
@@ -183,7 +187,7 @@ export default function LandingPage() {
             transition={{ duration: 0.5, delay: 0.9 }}
           >
             <motion.a
-              href="https://github.com/yourusername"
+              href="https://github.com/dexnis8"
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-800 text-xl text-white transition-all hover:bg-editor-accent-primary"
@@ -192,7 +196,7 @@ export default function LandingPage() {
               <FaGithub />
             </motion.a>
             <motion.a
-              href="https://linkedin.com/in/yourusername"
+              href="https://linkedin.com/in/isaac-ayorinde"
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-800 text-xl text-white transition-all hover:bg-editor-accent-primary"
@@ -201,19 +205,19 @@ export default function LandingPage() {
               <FaLinkedin />
             </motion.a>
             <motion.a
-              href="https://twitter.com/yourusername"
+              href="https://x.com/dexnis8"
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-800 text-xl text-white transition-all hover:bg-editor-accent-primary"
               whileHover={{ y: -5 }}
             >
-              <FaTwitter />
+              <RiTwitterXFill />
             </motion.a>
           </motion.div>
         </motion.div>
 
         {/* Scroll indicator */}
-        <motion.div
+        {/* <motion.div
           className="absolute bottom-10"
           animate={{ y: [0, 10, 0] }}
           transition={{
@@ -241,7 +245,7 @@ export default function LandingPage() {
               />
             </svg>
           </button>
-        </motion.div>
+        </motion.div> */}
       </section>
 
       {/* About Section */}
@@ -279,13 +283,14 @@ export default function LandingPage() {
               </p>
 
               <motion.a
-                href="/resume.pdf"
-                download
+                href="https://docs.google.com/document/d/1E0Aov4wXCu_qHufc6hvh46haPer1P6C0P2gezeVmlJA/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg bg-editor-accent-primary px-6 py-3 text-white transition-all hover:bg-editor-accent-secondary hover:shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <FaDownload /> Download Resume
+                <FaEye /> View Resume
               </motion.a>
             </motion.div>
 
@@ -487,10 +492,10 @@ export default function LandingPage() {
                       Email
                     </h4>
                     <a
-                      href="mailto:isaac@example.com"
+                      href="mailto:isaacayorinde442@gmail.com"
                       className="text-lg hover:text-editor-accent-primary hover:underline"
                     >
-                      isaac@example.com
+                      isaacayorinde442@gmail.com
                     </a>
                   </div>
                 </div>
@@ -511,7 +516,7 @@ export default function LandingPage() {
               <h3 className="mb-6 text-2xl font-semibold">Connect With Me</h3>
               <div className="flex space-x-4">
                 <motion.a
-                  href="https://github.com/yourusername"
+                  href="https://github.com/dexnis8"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-800 text-white hover:bg-editor-accent-primary"
@@ -520,7 +525,7 @@ export default function LandingPage() {
                   <FaGithub />
                 </motion.a>
                 <motion.a
-                  href="https://linkedin.com/in/yourusername"
+                  href="https://linkedin.com/in/isaac-ayorinde"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0077B5] text-white hover:bg-editor-accent-primary"
@@ -529,13 +534,13 @@ export default function LandingPage() {
                   <FaLinkedin />
                 </motion.a>
                 <motion.a
-                  href="https://twitter.com/yourusername"
+                  href="https://x.com/dexnis8"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1DA1F2] text-white hover:bg-editor-accent-primary"
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[#000000] text-white hover:bg-editor-accent-primary"
                   whileHover={{ y: -5 }}
                 >
-                  <FaTwitter />
+                  <RiTwitterXFill />
                 </motion.a>
               </div>
             </motion.div>
@@ -671,22 +676,28 @@ export default function LandingPage() {
               </h4>
               <div className="flex justify-center space-x-4">
                 <a
-                  href="#"
+                  href="https://github.com/dexnis8"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 transition-colors hover:text-editor-accent-primary"
                 >
                   <FaGithub className="h-5 w-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://linkedin.com/in/isaac-ayorinde"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 transition-colors hover:text-editor-accent-primary"
                 >
                   <FaLinkedin className="h-5 w-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://x.com/dexnis8"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 transition-colors hover:text-editor-accent-primary"
                 >
-                  <FaTwitter className="h-5 w-5" />
+                  <RiTwitterXFill className="h-5 w-5" />
                 </a>
               </div>
             </div>

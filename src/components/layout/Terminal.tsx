@@ -7,7 +7,9 @@ import {
   FaChevronUp,
   FaExpand,
   FaCompress,
+  FaEye,
 } from "react-icons/fa";
+// import { RiTwitterXFill } from "react-icons/ri";
 
 interface Command {
   input: string;
@@ -72,7 +74,7 @@ const AVAILABLE_COMMANDS = [
   "skills devops",
   "skills tools",
   "theme",
-  "download cv",
+  "view cv",
   "clear",
   "social",
   "history",
@@ -286,8 +288,10 @@ export default function Terminal() {
               dark/light theme
             </p>
             <p>
-              <span className="text-editor-accent-primary">download cv</span> -
-              Download my CV/resume
+              <span className="text-editor-accent-primary flex items-center gap-1">
+                view cv <FaEye className="inline-block" size={12} />
+              </span>{" "}
+              - View my CV/resume
             </p>
             <p>
               <span className="text-editor-accent-primary">clear</span> - Clear
@@ -366,15 +370,18 @@ export default function Terminal() {
         output = `Theme switched to ${theme === "dark" ? "light" : "dark"} mode.`;
         break;
       case "download":
+      case "view":
         if (args.length > 0 && args[0] === "cv") {
-          // Trigger download of CV - update with your actual CV path
+          // Open CV in a new tab
           const link = document.createElement("a");
-          link.href = "/resume.pdf";
-          link.download = "Isaac_Ayorinde_Resume.pdf";
+          link.href =
+            "https://docs.google.com/document/d/1E0Aov4wXCu_qHufc6hvh46haPer1P6C0P2gezeVmlJA/edit?usp=sharing";
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
           link.click();
-          output = "Downloading CV...";
+          output = "Opening CV in a new tab...";
         } else {
-          output = "Please specify what to download. Try 'download cv'";
+          output = "Please specify what to view. Try 'view cv'";
         }
         break;
       case "clear":
@@ -387,34 +394,34 @@ export default function Terminal() {
             <p>
               <span className="text-editor-accent-primary">GitHub:</span>{" "}
               <a
-                href="https://github.com/yourusername"
+                href="https://github.com/dexnis8"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline hover:text-editor-accent-primary"
               >
-                github.com/yourusername
+                github.com/dexnis8
               </a>
             </p>
             <p>
               <span className="text-editor-accent-primary">LinkedIn:</span>{" "}
               <a
-                href="https://linkedin.com/in/yourusername"
+                href="https://linkedin.com/in/isaac-ayorinde"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline hover:text-editor-accent-primary"
               >
-                linkedin.com/in/yourusername
+                linkedin.com/in/isaac-ayorinde
               </a>
             </p>
             <p>
-              <span className="text-editor-accent-primary">Twitter:</span>{" "}
+              <span className="text-editor-accent-primary">X (Twitter):</span>{" "}
               <a
-                href="https://twitter.com/yourusername"
+                href="https://x.com/dexnis8"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline hover:text-editor-accent-primary"
               >
-                twitter.com/yourusername
+                x.com/dexnis8
               </a>
             </p>
           </div>
