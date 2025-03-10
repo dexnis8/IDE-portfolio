@@ -7,7 +7,6 @@ import {
   FaChevronUp,
   FaExpand,
   FaCompress,
-  FaTimes,
 } from "react-icons/fa";
 
 interface Command {
