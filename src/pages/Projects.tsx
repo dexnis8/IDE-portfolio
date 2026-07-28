@@ -8,7 +8,7 @@ import { useTheme } from "../context/ThemeContext";
 
 const projectsCode = `/**
  * projects.ts — Engineering Systems
- * Production case studies shipped by Isaac Ayorinde.
+ * Production case studies.
  */
 
 interface CaseStudy {
@@ -24,77 +24,69 @@ interface CaseStudy {
 
 const caseStudies: CaseStudy[] = [
   {
-    title:  "High-Throughput Payment Gateway",
-    period: "2023 – 2024",
-    stack:  ["Node.js", "PostgreSQL", "Redis", "Kafka", "Docker", "AWS"],
-
+    title:  "BigQuery Cost & Latency Optimization",
+    stack:  ["Node.js", "BigQuery", "Redis"],
     problem:
-      "Legacy monolithic payment processor collapsing under 3× traffic \
-growth, producing cascading timeouts during peak checkout windows.",
+      "Growing platform traffic caused identical HTTP requests \
+       to repeatedly hit the database, increasing infrastructure \
+       costs and slowing API response times.",
 
     architecture:
-      "Decomposed into event-driven microservices using a CQRS pattern \
-with Kafka as the event bus. PostgreSQL with read replicas and \
-Redis-based idempotency keys eliminated duplicate-charge incidents. \
-Blue/green deploys on ECS with automated canary rollback.",
+      "Introduced a Redis cache-aside layer with deterministic \
+       cache keys and TTL-based expiration, serving frequently \
+       requested business data from memory while keeping cached \
+        records fresh.",
 
     impact: [
-      "Throughput scaled from 400 TPS → 18,000 TPS",
-      "P99 latency reduced from 1.2 s → 94 ms",
-      "Zero duplicate charges since migration",
-      "Zero-downtime releases — release windows eliminated",
+      "Eliminated redundant database reads",
+      "Significantly reduced backend load",
+      "Reduced BigQuery costs.",
     ],
   },
 
   {
-    title:  "Real-Time Analytics Pipeline",
-    period: "2022 – 2023",
-    stack:  ["Go", "ClickHouse", "AWS Kinesis", "Terraform", "Grafana"],
+    title:  "Serverless Web Scraping Engine",
+    stack:  ["JavaScript", "GCP Functions", "PUPPETEER"],
 
     problem:
-      "Business-critical dashboards lagging 40+ minutes behind live data. \
-ETL jobs were batch-based and brittle — a single failure stalled \
-the entire pipeline for hours.",
+      "Manual market research and lead capture were bottlenecking \
+       growth and time consuming for marketing team leading to reduced \
+       productivity.",
 
     architecture:
-      "Rewrote ingestion layer in Go using AWS Kinesis Data Streams for \
-fan-out. ClickHouse replaced Redshift for columnar OLAP, delivering \
-sub-second aggregation across billions of rows. Dead-letter queues \
-and idempotent consumers eliminated data loss.",
+      "Built a serverless scraping engine using JavaScript and \
+       headless Chromium via Puppeteer. Deployed on Google Cloud \
+       Functions with daily scheduled triggers to automatically \
+       normalize and push data into Airtable via API.",
 
     impact: [
-      "Dashboard freshness: 40 min → < 8 seconds",
-      "Infrastructure cost reduced by 34%",
-      "Pipeline reliability: 99.97% uptime (was 94%)",
-      "Onboarding new data sources: weeks → hours",
+      "Eliminated manual efforts",
+      "Improved productivity of the marketing team",
+      "Automatically processing 500+ unique leads weekly",
     ],
   },
 
   {
-    title:  "Portfolio — Dev Mode IDE",
-    period: "2024 – Present",
-    stack:  ["React", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion"],
-
+    title:  "Crypto-to-Fiat Payment Infrastructure",
+    stack:  ["C# .NET", "ASP.NET Core", "Webhooks"],
     problem:
-      "Typical portfolio sites feel static and disconnected from how \
-engineers actually work. The goal was a portfolio that reflects \
-the craft — interactive, opinionated, and built like a real product.",
+      "Building a crypto-to-fiat payment platform required \
+       reliable transaction processing, strict idempotency, \
+       and secure non-custodial wallet management.",
+
 
     architecture:
-      "VS Code / Kiro-inspired IDE shell with a landing page mode and a \
-dev mode. Shared ViewModeContext persists preference to localStorage. \
-Monaco Editor renders code-as-content. Interactive terminal with \
-command history, autocomplete, and easter eggs.",
+      "Engineered a C# (.NET) payment service integrating \
+       Quidax, Monnify, and Uniswap v4. Abstracted wallet management \
+       through Turnkey, implemented webhook signature verification, and \
+       built asynchronous retry queues for reliable payment processing.",
+
 
     impact: [
-      "Dual-mode UX: premium landing page + fully functional IDE shell",
-      "Kiro IDE theme with dark / light mode support",
-      "Terminal with 15+ commands and hidden easter eggs",
-      "Framer Motion scroll animations with prefers-reduced-motion support",
+      "Enabled reliable crypto-to-fiat payment flows
+      "Integrated with 3+ financial providers",
+      "Processed 100+ transactions daily",
     ],
-
-    live: "https://isaac-ayorinde.dev",
-    repo: "https://github.com/dexnis8/portfolio",
   },
 ];
 
@@ -103,7 +95,7 @@ function displayProjects(): string {
     .map(
       (cs) => \`
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🚀  \${cs.title}
+    \${cs.title}
     \${cs.period}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -139,18 +131,18 @@ export default function Projects() {
         defaultValue={projectsCode}
         theme={theme === "dark" ? "vs-dark" : "vs"}
         options={{
-          readOnly:             true,
-          minimap:              { enabled: true },
-          fontSize:             13,
-          lineHeight:           22,
-          lineNumbers:          "on",
+          readOnly: true,
+          minimap: { enabled: true },
+          fontSize: 13,
+          lineHeight: 22,
+          lineNumbers: "on",
           scrollBeyondLastLine: false,
-          wordWrap:             "on",
-          automaticLayout:      true,
-          fontFamily:           "'Fira Code', 'JetBrains Mono', monospace",
-          fontLigatures:        true,
-          renderLineHighlight:  "gutter",
-          padding:              { top: 16, bottom: 16 },
+          wordWrap: "on",
+          automaticLayout: true,
+          fontFamily: "'Fira Code', 'JetBrains Mono', monospace",
+          fontLigatures: true,
+          renderLineHighlight: "gutter",
+          padding: { top: 16, bottom: 16 },
         }}
       />
     </div>

@@ -10,23 +10,40 @@ import { motion, useReducedMotion } from "framer-motion";
 import {
   FiArrowUpRight,
   FiTerminal,
-  FiServer,
-  FiDatabase,
-  FiGitBranch,
+  // FiServer,
+  // FiDatabase,
+  // FiGitBranch,
   FiExternalLink,
   FiSun,
   FiMoon,
 } from "react-icons/fi";
+// import {
+//   SiNodedotjs,
+//   SiGo,
+//   SiPostgresql,
+//   SiRedis,
+//   SiDocker,
+//   SiAmazon,
+//   SiKubernetes,
+//   SiNginx,
+//   SiTypescript,
+//   SiGithub,
+//   SiLinkedin,
+// } from "react-icons/si";
 import {
   SiNodedotjs,
-  SiGo,
-  SiPostgresql,
-  SiRedis,
-  SiDocker,
-  SiAmazon,
-  SiKubernetes,
-  SiNginx,
+  SiDotnet,
   SiTypescript,
+  SiPostgresql,
+  SiMongodb,
+  SiRedis,
+  SiAmazon,
+  SiMysql,
+  SiDocker,
+  SiGithubactions,
+  SiStripe,
+  SiGooglecloud,
+  SiNestjs,
   SiGithub,
   SiLinkedin,
 } from "react-icons/si";
@@ -39,7 +56,6 @@ const CaveatFontLink = () => (
     .font-caveat { font-family: 'Caveat', cursive; }
   `}</style>
 );
-
 
 /* ─── Shared animation factory ─────────────────────────────────────────── */
 function useFadeUp(reduced: boolean | null) {
@@ -61,66 +77,106 @@ function useFadeUp(reduced: boolean | null) {
 
 /* ─── Data ──────────────────────────────────────────────────────────────── */
 const metrics = [
-  { value: "99.97%", label: "API Uptime SLA" },
-  { value: "5M+", label: "Daily Active Users" },
-  { value: "< 80ms", label: "P95 API Latency" },
-  { value: "12+", label: "Systems Shipped" },
+  // { value: "99.97%", label: "Uptime maintained" },
+  // { value: "< 80ms", label: "P95 API Latency" },
+  // { value: "12+", label: "Systems Shipped" },
+  // { value: "20K+", label: "Daily Active Users" },
+  { value: "100%", label: "Idempotent transactions" },
+  { value: "15+", label: "Developers mentored" },
+  { value: "300ms", label: "Avg latency reduced" },
+  { value: "3+", label: "Years SaaS & FinTech" },
 ];
 
 const caseStudies = [
   {
-    title: "High-Throughput Payment Gateway",
-    tags: ["Node.js", "PostgreSQL", "Redis"],
-    date: "2023 – 2024",
+    title: "BigQuery Cost & Latency Optimization",
+    tags: ["Node.js", "BigQuery", "Redis"],
+    date: "2025 – 2026",
     problem:
-      "Legacy monolithic payment processor collapsing under 3× traffic growth, producing cascading timeouts during peak checkout windows.",
+      "Growing platform traffic caused identical HTTP requests to repeatedly hit the database, increasing infrastructure costs and slowing API response times.",
     architecture:
-      "Decomposed into event-driven microservices using a CQRS pattern with Kafka as the event bus. PostgreSQL with read replicas and Redis-based idempotency keys reduced duplicate-charge incidents to zero.",
+      "Introduced a Redis cache-aside layer with deterministic cache keys and TTL-based expiration, serving frequently requested business data from memory while keeping cached records fresh.",
     impact:
-      "Throughput scaled from 400 TPS to 18,000 TPS. P99 latency dropped from 1.2 s to 94 ms. Zero-downtime blue/green deploy eliminated all release windows.",
+      "Eliminated redundant database reads, significantly reduced backend load and BigQuery costs.",
     hasAnnotation: true,
+    annotation:
+      "Instead of generic TTLs, I implemented cache warmups for peak usage times so cache misses never impacted end users.",
   },
   {
-    title: "Real-Time Analytics Pipeline",
-    tags: ["Go", "ClickHouse", "AWS Kinesis"],
+    title: "Serverless Web Scraping Engine",
+    tags: ["JavaScript", "GCP Functions", "PUPPETEER"],
     date: "2022 – 2023",
     problem:
-      "Business-critical dashboards lagging 40+ minutes behind live data. ETL jobs were batch-based and brittle — a single failure would stall the entire pipeline.",
+      "Manual market research and lead capture were bottlenecking growth and time consuming for marketing team leading to reduced productivity.",
     architecture:
-      "Rewrote ingestion layer in Go using AWS Kinesis Data Streams for fan-out. ClickHouse replaced Redshift for columnar OLAP, delivering sub-second aggregation across billions of rows.",
+      "Built a serverless scraping engine using JavaScript and headless Chromium via Puppeteer. Deployed on Google Cloud Functions with daily scheduled triggers to automatically normalize and push data into Airtable via API.",
     impact:
-      "Dashboard freshness improved from 40 min to under 8 seconds. Infrastructure cost dropped 34% by eliminating nightly Redshift clusters.",
+      "Completely eliminated manual effort, automatically processing 500+ verified leads weekly with zero server maintenance overhead.",
     hasAnnotation: false,
+    annotation: "",
+  },
+  {
+    title: "Crypto-to-Fiat Payment Infrastructure",
+    tags: ["C# .NET", "ASP.NET Core", "Webhooks"],
+    date: "2023 – Present",
+
+    problem:
+      "Building a crypto-to-fiat payment platform required reliable transaction processing, strict idempotency, and secure non-custodial wallet management.",
+
+    architecture:
+      "Engineered a C# (.NET) payment service integrating Quidax, Monnify, and Uniswap v4. Abstracted wallet management through Turnkey, implemented webhook signature verification, and built asynchronous retry queues for reliable payment processing.",
+
+    impact:
+      "Enabled reliable crypto-to-fiat payment flows, prevented duplicate transaction processing through idempotent handling, and automated secure non-custodial wallet provisioning.",
+    hasAnnotation: true,
+    annotation:
+      "Combined idempotent state transitions, atomic state locks, and webhook signature verification to ensure duplicate or out-of-order webhook deliveries were safely ignored.",
   },
 ];
 
+// const stack = [
+//   { icon: <SiNodedotjs />, label: "Node.js" },
+//   { icon: <SiGo />, label: "Go" },
+//   { icon: <SiTypescript />, label: "TypeScript" },
+//   { icon: <SiPostgresql />, label: "PostgreSQL" },
+//   { icon: <SiRedis />, label: "Redis" },
+//   { icon: <SiDocker />, label: "Docker" },
+//   { icon: <SiKubernetes />, label: "Kubernetes" },
+//   { icon: <SiAmazon />, label: "AWS" },
+//   { icon: <SiNginx />, label: "NGINX" },
+//   { icon: <FiDatabase />, label: "ClickHouse" },
+//   { icon: <FiServer />, label: "Kafka" },
+//   { icon: <FiGitBranch />, label: "Terraform" },
+// ];
+
 const stack = [
   { icon: <SiNodedotjs />, label: "Node.js" },
-  { icon: <SiGo />, label: "Go" },
+  { icon: <SiDotnet />, label: "C# (.NET)" },
   { icon: <SiTypescript />, label: "TypeScript" },
+  { icon: <SiMysql />, label: "MySQL" },
   { icon: <SiPostgresql />, label: "PostgreSQL" },
+  { icon: <SiMongodb />, label: "MongoDB" },
   { icon: <SiRedis />, label: "Redis" },
-  { icon: <SiDocker />, label: "Docker" },
-  { icon: <SiKubernetes />, label: "Kubernetes" },
   { icon: <SiAmazon />, label: "AWS" },
-  { icon: <SiNginx />, label: "NGINX" },
-  { icon: <FiDatabase />, label: "ClickHouse" },
-  { icon: <FiServer />, label: "Kafka" },
-  { icon: <FiGitBranch />, label: "Terraform" },
+  { icon: <SiDocker />, label: "Docker" },
+  { icon: <SiGithubactions />, label: "GitHub Actions" },
+  { icon: <SiStripe />, label: "Stripe API" },
+  { icon: <SiGooglecloud />, label: "Google Cloud" },
+  { icon: <SiNestjs />, label: "NestJS" },
 ];
 
 const tenets = [
   {
-    title: "Boring technology is good technology.",
-    body: "Battle-tested tools — PostgreSQL, Linux, HTTP — have documented failure modes, enormous community knowledge, and decades of production hardening. Reach for the novel only after the boring option is provably insufficient.",
+    title: "Design for Failure.",
+    body: "In FinTech, the happy path is easy; edge cases are where companies lose money. I build systems that assume networks will fail, third-party APIs will time out and most importantly, I ensure that when things break, they fail gracefully and recover predictably.",
   },
   {
-    title: "Optimize for deletion.",
-    body: "The best code is the code you never have to maintain. Systems should be designed so individual components can be surgically removed without cascading grief. Loose coupling, explicit contracts, no magic.",
+    title: "Automation over Effort.",
+    body: "Developer time is a company’s most expensive asset. If a task requires manual intervention more than twice, it needs a script, a pipeline, or a cron job. Whether I am configuring CI/CD workflows via GitHub Actions or scraping unstructured data, my goal is always to build systems that run themselves.",
   },
   {
-    title: "Observability is a first-class feature.",
-    body: "Instrumentation is not an afterthought bolted on after the incident. Structured logs, distributed traces, and SLO-aligned metrics are shipped alongside the feature itself — always.",
+    title: "Explicit Over Clever.",
+    body: "Clever code creates hidden bugs; explicit code creates maintainable systems. I favor predictable data flows, strict type safety, and readable logic over hyper-abstracted patterns or premature optimizations. If an engineer on call can't safely debug a module in 5 minutes during a 2 AM incident, it needs to be rewritten.",
   },
   {
     title: "Prefer reversible decisions.",
@@ -139,14 +195,14 @@ export default function LandingPage() {
 
   /* ── Light / dark token maps ── */
   const t = {
-    bg:          theme === "dark" ? "#0A0A0A"         : "#F5F4F2",
-    surface:     theme === "dark" ? "#121212"         : "#ECEAE7",
-    surfaceDeep: theme === "dark" ? "#0A0A0A"         : "#E2E0DD",
-    border:      theme === "dark" ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.09)",
-    text:        theme === "dark" ? "#EDEDED"         : "#1A1A1A",
-    muted:       theme === "dark" ? "#888888"         : "#666666",
-    accent:      "#E55934",
-    navBg:       theme === "dark" ? "rgba(10,10,10,0.92)" : "rgba(245,244,242,0.92)",
+    bg: theme === "dark" ? "#0A0A0A" : "#F5F4F2",
+    surface: theme === "dark" ? "#121212" : "#ECEAE7",
+    surfaceDeep: theme === "dark" ? "#0A0A0A" : "#E2E0DD",
+    border: theme === "dark" ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.09)",
+    text: theme === "dark" ? "#EDEDED" : "#1A1A1A",
+    muted: theme === "dark" ? "#888888" : "#666666",
+    accent: "#E55934",
+    navBg: theme === "dark" ? "rgba(10,10,10,0.92)" : "rgba(245,244,242,0.92)",
   };
 
   return (
@@ -158,7 +214,6 @@ export default function LandingPage() {
         className="min-h-screen selection:bg-[#E55934]/30"
         style={{ backgroundColor: t.bg, color: t.text }}
       >
-
         {/* ══════════════════════════════════════════════════════════════════
             TOP NAV
         ══════════════════════════════════════════════════════════════════ */}
@@ -171,7 +226,10 @@ export default function LandingPage() {
         >
           <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
             {/* Wordmark */}
-            <span className="font-mono text-sm font-semibold tracking-widest" style={{ color: t.text }}>
+            <span
+              className="font-mono text-sm font-semibold tracking-widest"
+              style={{ color: t.text }}
+            >
               ISAAC<span style={{ color: t.accent }}>.</span>
             </span>
 
@@ -196,7 +254,7 @@ export default function LandingPage() {
                 Stack
               </a>
               <a
-                href="https://docs.google.com/document/d/1E0Aov4wXCu_qHufc6hvh46haPer1P6C0P2gezeVmlJA/edit?usp=sharing"
+                href="https://docs.google.com/document/d/1Yt6xEsv3m1rpeyrrky9c6DvMK1aP2VD6StJFdsD_B2Q/edit?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest transition-colors"
@@ -210,7 +268,11 @@ export default function LandingPage() {
               {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
-                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                aria-label={
+                  theme === "dark"
+                    ? "Switch to light mode"
+                    : "Switch to dark mode"
+                }
                 className="flex h-8 w-8 items-center justify-center rounded-md transition-colors"
                 style={{
                   border: `1px solid ${t.border}`,
@@ -252,7 +314,6 @@ export default function LandingPage() {
         ══════════════════════════════════════════════════════════════════ */}
         <section className="flex min-h-[70vh] flex-col justify-center pt-24 pb-16">
           <div className="mx-auto max-w-5xl px-6">
-
             {/* Eyebrow */}
             <motion.p
               initial={reduced ? { opacity: 1 } : { opacity: 0 }}
@@ -285,10 +346,10 @@ export default function LandingPage() {
               className="mt-6 max-w-2xl text-base leading-relaxed md:text-lg"
               style={{ color: t.muted }}
             >
-              Senior Full-Stack Engineer specialising in high-throughput
-              Node.js/Go APIs, distributed databases, and zero-downtime
-              deployments. I turn undefined scale problems into boring,
-              well-documented infrastructure.
+              Backend Engineer specializing in scalable APIs, secure
+              integrations, and resilient backend systems with Node.js and .NET.
+              I solve complex problems with simple, dependable software
+              architecture.
             </motion.p>
 
             {/* CTAs */}
@@ -296,12 +357,12 @@ export default function LandingPage() {
               initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.3 }}
-              className="mt-10 flex flex-wrap items-center gap-4"
+              className="mt-10 flex flex-wrap  items-center gap-4"
             >
               {/* Primary CTA */}
               <button
                 onClick={() => setViewMode("devMode")}
-                className="flex items-center gap-2 rounded-md bg-[#E55934] px-5 py-2.5 font-mono text-sm font-medium tracking-wide text-white transition-opacity hover:opacity-90"
+                className="sm:flex hidden items-center gap-2 rounded-md bg-[#E55934] px-5 py-2.5 font-mono text-sm font-medium tracking-wide text-white transition-opacity hover:opacity-90"
               >
                 <FiTerminal />
                 Open Dev Mode
@@ -315,8 +376,12 @@ export default function LandingPage() {
                   border: `1px solid ${t.border}`,
                   color: t.text,
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${t.border.replace("0.08","0.18").replace("0.09","0.18")}`)}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = t.border)}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.borderColor = `${t.border.replace("0.08", "0.18").replace("0.09", "0.18")}`)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.borderColor = t.border)
+                }
               >
                 View Case Studies
                 <FiArrowUpRight />
@@ -366,9 +431,12 @@ export default function LandingPage() {
               >
                 <RiTwitterXFill />
               </a>
-              <span className="ml-1 h-px w-8" style={{ backgroundColor: t.border }} />
+              <span
+                className="ml-1 h-px w-8"
+                style={{ backgroundColor: t.border }}
+              />
               <span className="font-mono text-xs" style={{ color: t.muted }}>
-                Based in Lagos, NG
+                {/* Based in Ibadan, NG */}
               </span>
             </motion.div>
           </div>
@@ -391,10 +459,16 @@ export default function LandingPage() {
                   className={`flex flex-col gap-1.5 px-6 py-8 ${i !== 0 ? "border-l" : ""} ${i >= 2 ? "max-md:border-t" : ""}`}
                   style={{ borderColor: t.border }}
                 >
-                  <span className="font-mono text-3xl font-semibold md:text-4xl" style={{ color: t.text }}>
+                  <span
+                    className="font-mono text-3xl font-semibold md:text-4xl"
+                    style={{ color: t.text }}
+                  >
                     {m.value}
                   </span>
-                  <span className="font-sans text-[10px] uppercase tracking-widest" style={{ color: t.muted }}>
+                  <span
+                    className="font-sans text-[10px] uppercase tracking-widest"
+                    style={{ color: t.muted }}
+                  >
                     {m.label}
                   </span>
                 </motion.div>
@@ -408,14 +482,19 @@ export default function LandingPage() {
         ══════════════════════════════════════════════════════════════════ */}
         <section id="systems" className="py-24">
           <div className="mx-auto max-w-5xl px-6">
-
             {/* Section header */}
             <motion.div {...fadeUp} className="mb-12">
-              <p className="font-mono text-xs uppercase tracking-widest" style={{ color: t.accent }}>
+              <p
+                className="font-mono text-xs uppercase tracking-widest"
+                style={{ color: t.accent }}
+              >
                 01 /
               </p>
-              <h2 className="mt-1 font-mono text-xl font-semibold" style={{ color: t.text }}>
-                Engineering Systems
+              <h2
+                className="mt-1 font-mono text-xl font-semibold"
+                style={{ color: t.text }}
+              >
+                Systems & Architecture
               </h2>
             </motion.div>
 
@@ -466,9 +545,11 @@ export default function LandingPage() {
                           fill="none"
                         />
                       </svg>
-                      <span className="font-caveat max-w-[200px] text-lg leading-snug" style={{ color: t.accent }}>
-                        Switched from Mongo to Postgres here to handle complex
-                        relational queries.
+                      <span
+                        className="font-caveat max-w-[200px] text-lg leading-snug"
+                        style={{ color: t.accent }}
+                      >
+                        {cs.annotation}
                       </span>
                     </div>
                   )}
@@ -476,7 +557,10 @@ export default function LandingPage() {
                   <div className="flex flex-col gap-8 md:flex-row">
                     {/* Left column */}
                     <div className="flex-shrink-0 md:w-56">
-                      <h3 className="text-base font-semibold leading-snug" style={{ color: t.text }}>
+                      <h3
+                        className="text-base font-semibold leading-snug"
+                        style={{ color: t.text }}
+                      >
                         {cs.title}
                       </h3>
 
@@ -498,32 +582,50 @@ export default function LandingPage() {
                       </div>
 
                       {/* Date */}
-                      <p className="mt-5 font-mono text-xs" style={{ color: t.muted }}>
+                      {/* <p
+                        className="mt-5 font-mono text-xs"
+                        style={{ color: t.muted }}
+                      >
                         {cs.date}
-                      </p>
+                      </p> */}
                     </div>
 
                     {/* Divider */}
-                    <div className="hidden w-px self-stretch md:block" style={{ backgroundColor: t.border }} />
+                    <div
+                      className="hidden w-px self-stretch md:block"
+                      style={{ backgroundColor: t.border }}
+                    />
 
                     {/* Right column */}
                     <div className="flex flex-1 flex-col gap-5">
                       {/* Problem */}
                       <div>
-                        <p className="mb-1.5 font-mono text-[10px] uppercase tracking-widest" style={{ color: t.accent }}>
+                        <p
+                          className="mb-1.5 font-mono text-[10px] uppercase tracking-widest"
+                          style={{ color: t.accent }}
+                        >
                           Problem
                         </p>
-                        <p className="text-sm leading-relaxed" style={{ color: t.muted }}>
+                        <p
+                          className="text-sm leading-relaxed"
+                          style={{ color: t.muted }}
+                        >
                           {cs.problem}
                         </p>
                       </div>
 
                       {/* Architecture */}
                       <div>
-                        <p className="mb-1.5 font-mono text-[10px] uppercase tracking-widest" style={{ color: `${t.text}99` }}>
+                        <p
+                          className="mb-1.5 font-mono text-[10px] uppercase tracking-widest"
+                          style={{ color: `${t.text}99` }}
+                        >
                           Architecture
                         </p>
-                        <p className="text-sm leading-relaxed" style={{ color: t.muted }}>
+                        <p
+                          className="text-sm leading-relaxed"
+                          style={{ color: t.muted }}
+                        >
                           {cs.architecture}
                         </p>
                       </div>
@@ -536,10 +638,16 @@ export default function LandingPage() {
                           backgroundColor: t.surfaceDeep,
                         }}
                       >
-                        <p className="mb-1.5 font-mono text-[10px] uppercase tracking-widest" style={{ color: t.muted }}>
+                        <p
+                          className="mb-1.5 font-mono text-[10px] uppercase tracking-widest"
+                          style={{ color: t.muted }}
+                        >
                           Impact
                         </p>
-                        <p className="text-sm leading-relaxed" style={{ color: t.text }}>
+                        <p
+                          className="text-sm leading-relaxed"
+                          style={{ color: t.text }}
+                        >
                           {cs.impact}
                         </p>
                       </div>
@@ -554,15 +662,24 @@ export default function LandingPage() {
         {/* ══════════════════════════════════════════════════════════════════
             CORE STACK
         ══════════════════════════════════════════════════════════════════ */}
-        <section id="stack" className="border-t py-24" style={{ borderColor: t.border }}>
+        <section
+          id="stack"
+          className="border-t py-24"
+          style={{ borderColor: t.border }}
+        >
           <div className="mx-auto max-w-5xl px-6">
-
             {/* Section header */}
             <motion.div {...fadeUp} className="mb-12">
-              <p className="font-mono text-xs uppercase tracking-widest" style={{ color: t.accent }}>
+              <p
+                className="font-mono text-xs uppercase tracking-widest"
+                style={{ color: t.accent }}
+              >
                 02 /
               </p>
-              <h2 className="mt-1 font-mono text-xl font-semibold" style={{ color: t.text }}>
+              <h2
+                className="mt-1 font-mono text-xl font-semibold"
+                style={{ color: t.text }}
+              >
                 Infrastructure &amp; Languages
               </h2>
             </motion.div>
@@ -582,7 +699,9 @@ export default function LandingPage() {
                     backgroundColor: t.surface,
                   }}
                 >
-                  <span className="text-base" style={{ color: t.muted }}>{item.icon}</span>
+                  <span className="text-base" style={{ color: t.muted }}>
+                    {item.icon}
+                  </span>
                   <span className="font-mono text-xs" style={{ color: t.text }}>
                     {item.label}
                   </span>
@@ -592,11 +711,20 @@ export default function LandingPage() {
 
             {/* Horizontal rule with label */}
             <div className="mt-16 flex items-center gap-4">
-              <span className="h-px flex-1" style={{ backgroundColor: t.border }} />
-              <span className="font-mono text-[10px] uppercase tracking-widest" style={{ color: t.muted }}>
+              <span
+                className="h-px flex-1"
+                style={{ backgroundColor: t.border }}
+              />
+              <span
+                className="font-mono text-[10px] uppercase tracking-widest"
+                style={{ color: t.muted }}
+              >
                 Also comfortable with
               </span>
-              <span className="h-px flex-1" style={{ backgroundColor: t.border }} />
+              <span
+                className="h-px flex-1"
+                style={{ backgroundColor: t.border }}
+              />
             </div>
 
             <motion.p
@@ -605,8 +733,9 @@ export default function LandingPage() {
               className="mt-6 font-mono text-xs leading-relaxed"
               style={{ color: t.muted }}
             >
-              React · Next.js · GraphQL · gRPC · Prometheus · Grafana ·
-              Elasticsearch · RabbitMQ · GitHub Actions · ArgoCD
+              {/* React · Next.js · GraphQL · gRPC · Prometheus · Grafana ·
+              Elasticsearch · RabbitMQ · GitHub Actions · ArgoCD */}
+              React · Next.js · GraphQL · GitHub Actions
             </motion.p>
           </div>
         </section>
@@ -616,14 +745,19 @@ export default function LandingPage() {
         ══════════════════════════════════════════════════════════════════ */}
         <section className="border-t py-24" style={{ borderColor: t.border }}>
           <div className="mx-auto max-w-5xl px-6">
-
             {/* Section header */}
             <motion.div {...fadeUp} className="mb-12">
-              <p className="font-mono text-xs uppercase tracking-widest" style={{ color: t.accent }}>
+              <p
+                className="font-mono text-xs uppercase tracking-widest"
+                style={{ color: t.accent }}
+              >
                 03 /
               </p>
-              <h2 className="mt-1 font-mono text-xl font-semibold" style={{ color: t.text }}>
-                Tenets
+              <h2
+                className="mt-1 font-mono text-xl font-semibold"
+                style={{ color: t.text }}
+              >
+                My Tenets
               </h2>
             </motion.div>
 
@@ -644,14 +778,23 @@ export default function LandingPage() {
                   }}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="mt-0.5 shrink-0 font-mono text-xs" style={{ color: t.accent }}>
+                    <span
+                      className="mt-0.5 shrink-0 font-mono text-xs"
+                      style={{ color: t.accent }}
+                    >
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="text-sm font-semibold leading-snug" style={{ color: t.text }}>
+                    <h3
+                      className="text-sm font-semibold leading-snug"
+                      style={{ color: t.text }}
+                    >
                       {t_item.title}
                     </h3>
                   </div>
-                  <p className="pl-7 text-sm leading-relaxed" style={{ color: t.muted }}>
+                  <p
+                    className="pl-7 text-sm leading-relaxed"
+                    style={{ color: t.muted }}
+                  >
                     {t_item.body}
                   </p>
                 </motion.div>
@@ -666,7 +809,10 @@ export default function LandingPage() {
         <footer className="border-t py-10" style={{ borderColor: t.border }}>
           <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-6 md:flex-row">
             {/* Wordmark */}
-            <span className="font-mono text-sm font-semibold" style={{ color: t.muted }}>
+            <span
+              className="font-mono text-sm font-semibold"
+              style={{ color: t.muted }}
+            >
               ISAAC<span style={{ color: t.accent }}>.</span>AYO
             </span>
 
@@ -674,7 +820,7 @@ export default function LandingPage() {
             <nav className="flex items-center gap-6">
               {[
                 { href: "#systems", label: "Systems" },
-                { href: "#stack",   label: "Stack" },
+                { href: "#stack", label: "Stack" },
                 { href: "mailto:isaacayorinde442@gmail.com", label: "Contact" },
               ].map((link) => (
                 <a
@@ -693,9 +839,21 @@ export default function LandingPage() {
             {/* Social */}
             <div className="flex items-center gap-5">
               {[
-                { href: "https://github.com/dexnis8",             icon: <SiGithub />,         label: "GitHub" },
-                { href: "https://linkedin.com/in/isaac-ayorinde", icon: <SiLinkedin />,        label: "LinkedIn" },
-                { href: "https://x.com/dexnis8",                  icon: <RiTwitterXFill />,    label: "X" },
+                {
+                  href: "https://github.com/dexnis8",
+                  icon: <SiGithub />,
+                  label: "GitHub",
+                },
+                {
+                  href: "https://linkedin.com/in/isaac-ayorinde",
+                  icon: <SiLinkedin />,
+                  label: "LinkedIn",
+                },
+                {
+                  href: "https://x.com/dexnis8",
+                  icon: <RiTwitterXFill />,
+                  label: "X",
+                },
               ].map((s) => (
                 <a
                   key={s.label}
@@ -714,12 +872,14 @@ export default function LandingPage() {
             </div>
 
             {/* Copyright */}
-            <p className="font-mono text-[10px] uppercase tracking-widest" style={{ color: `${t.muted}99` }}>
+            <p
+              className="font-mono text-[10px] uppercase tracking-widest"
+              style={{ color: `${t.muted}99` }}
+            >
               © {new Date().getFullYear()} Isaac Ayorinde
             </p>
           </div>
         </footer>
-
       </div>
     </>
   );

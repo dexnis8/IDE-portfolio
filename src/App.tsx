@@ -8,7 +8,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import { ViewModeProvider, useViewMode } from "./context/ViewModeContext";
 import Layout from "./components/layout/Layout";
 import LandingPage from "./pages/LandingPage";
-import ModeToggleButton from "./components/shared/ModeToggleButton";
+// import ModeToggleButton from "./components/shared/ModeToggleButton";
 
 // Lazy load pages for better performance
 import { lazy, Suspense } from "react";
@@ -62,7 +62,7 @@ export default function App() {
       <ThemeProvider>
         <ViewModeProvider>
           <AppContent />
-          <ModeToggleButton />
+          {/* <ModeToggleButton /> */}
         </ViewModeProvider>
       </ThemeProvider>
     </Router>

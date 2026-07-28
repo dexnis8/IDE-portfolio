@@ -24,11 +24,18 @@ interface Command {
 
 /* ─── Skills data (updated to match LandingPage) ──────────────────────── */
 const SKILLS = {
-  backend:    ["Node.js", "Go", "Python", "Express", "Fastify", "gRPC", "GraphQL"],
-  frontend:   ["React", "TypeScript", "Next.js", "Tailwind CSS", "Framer Motion"],
-  database:   ["PostgreSQL", "Redis", "ClickHouse", "MongoDB", "MySQL"],
-  devops:     ["Docker", "Kubernetes", "Terraform", "AWS", "GitHub Actions", "ArgoCD"],
-  tools:      ["NGINX", "Kafka", "Prometheus", "Grafana", "Elasticsearch"],
+  backend: ["Node.js", "Go", "Python", "Express", "Fastify", "gRPC", "GraphQL"],
+  frontend: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Framer Motion"],
+  database: ["PostgreSQL", "Redis", "ClickHouse", "MongoDB", "MySQL"],
+  devops: [
+    "Docker",
+    "Kubernetes",
+    "Terraform",
+    "AWS",
+    "GitHub Actions",
+    "ArgoCD",
+  ],
+  tools: ["NGINX", "Kafka", "Prometheus", "Grafana", "Elasticsearch"],
 };
 
 /* ─── Easter eggs ─────────────────────────────────────────────────────── */
@@ -36,9 +43,11 @@ const MatrixAnimation = () => (
   <div className="font-mono text-xs text-kiro-success dark:text-kiro-success light:text-kiro-l-success">
     {Array.from({ length: 8 }).map((_, i) => (
       <div key={i} className="my-0.5 opacity-80">
-        {Array.from({ length: Math.floor(Math.random() * 28) + 8 }).map((_, j) => (
-          <span key={j}>{Math.random() > 0.5 ? "1" : "0"}</span>
-        ))}
+        {Array.from({ length: Math.floor(Math.random() * 28) + 8 }).map(
+          (_, j) => (
+            <span key={j}>{Math.random() > 0.5 ? "1" : "0"}</span>
+          ),
+        )}
       </div>
     ))}
     <div className="mt-2 text-kiro-text dark:text-kiro-text light:text-kiro-l-text">
@@ -48,40 +57,52 @@ const MatrixAnimation = () => (
 );
 
 const EASTER_EGGS: Record<string, string | JSX.Element> = {
-  sudo:   "Nice try. You don't have root in this browser.",
+  sudo: "Nice try. You don't have root in this browser.",
   matrix: <MatrixAnimation />,
   coffee: "Error: Coffee machine not found. Virtual ☕ incoming.",
-  hello:  "Hello there. Ready to build something great?",
-  ping:   "pong 🏓",
-  flip:   "(╯°□°）╯︵ ┻━┻",
+  hello: "Hello there. Ready to build something great?",
+  ping: "pong 🏓",
+  flip: "(╯°□°）╯︵ ┻━┻",
   unflip: "┬─┬ ノ( ゜-゜ノ)",
-  party:  "🎉 🎊 🎈 Let's ship it! 🚀",
-  joke:   "Why do engineers prefer dark mode? Because light attracts bugs.",
-  quote:  '"Move fast, but make things that last." — Unknown SRE',
+  party: "🎉 🎊 🎈 Let's ship it! 🚀",
+  joke: "Why do engineers prefer dark mode? Because light attracts bugs.",
+  quote: '"Move fast, but make things that last." — Unknown SRE',
   konami: "⬆⬆⬇⬇⬅➡⬅➡ BA — Unlimited uptime unlocked! (not really)",
 };
 
 const AVAILABLE_COMMANDS = [
-  "help", "about", "projects", "experience", "contact",
-  "skills", "skills backend", "skills frontend", "skills database",
-  "skills devops", "skills tools",
-  "theme", "view cv", "clear", "social", "history",
+  "help",
+  "about",
+  "projects",
+  "experience",
+  "contact",
+  "skills",
+  "skills backend",
+  "skills frontend",
+  "skills database",
+  "skills devops",
+  "skills tools",
+  "theme",
+  "view cv",
+  "clear",
+  "social",
+  "history",
 ];
 
 export default function Terminal() {
-  const [commands, setCommands]           = useState<Command[]>([]);
-  const [currentInput, setCurrentInput]   = useState("");
+  const [commands, setCommands] = useState<Command[]>([]);
+  const [currentInput, setCurrentInput] = useState("");
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
-  const [historyIndex, setHistoryIndex]   = useState(-1);
-  const [suggestions, setSuggestions]     = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [konamiIndex, setKonamiIndex]     = useState(0);
-  const [isDragging, setIsDragging]       = useState(false);
+  const [konamiIndex, setKonamiIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
-  const inputRef        = useRef<HTMLInputElement>(null);
-  const terminalRef     = useRef<HTMLDivElement>(null);
-  const dragStartYRef   = useRef<number>(0);
-  const dragStartHRef   = useRef<number>(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const terminalRef = useRef<HTMLDivElement>(null);
+  const dragStartYRef = useRef<number>(0);
+  const dragStartHRef = useRef<number>(0);
 
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
@@ -94,8 +115,16 @@ export default function Terminal() {
   } = useTerminal();
 
   const konamiCode = [
-    "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
-    "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a",
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+    "b",
+    "a",
   ];
 
   /* auto-scroll */
@@ -105,22 +134,33 @@ export default function Terminal() {
 
   /* welcome message */
   useEffect(() => {
-    setCommands([{
-      input: "",
-      output: (
-        <span className="text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">
-          Welcome to <span className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">isaac-ayorinde</span> terminal.
-          Type <span className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">help</span> for available commands.
-        </span>
-      ),
-    }]);
+    setCommands([
+      {
+        input: "",
+        output: (
+          <span className="text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">
+            Welcome to{" "}
+            <span className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">
+              isaac-ayorinde
+            </span>{" "}
+            terminal. Type{" "}
+            <span className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">
+              help
+            </span>{" "}
+            for available commands.
+          </span>
+        ),
+      },
+    ]);
   }, []);
 
   /* suggestions */
   useEffect(() => {
     if (currentInput.trim()) {
       setSuggestions(
-        AVAILABLE_COMMANDS.filter((c) => c.startsWith(currentInput.toLowerCase()))
+        AVAILABLE_COMMANDS.filter((c) =>
+          c.startsWith(currentInput.toLowerCase()),
+        ),
       );
     } else {
       setSuggestions([]);
@@ -133,14 +173,17 @@ export default function Terminal() {
       if (e.key === konamiCode[konamiIndex]) {
         const next = konamiIndex + 1;
         setKonamiIndex(next);
-        if (next === konamiCode.length) { handleCommand("konami"); setKonamiIndex(0); }
+        if (next === konamiCode.length) {
+          handleCommand("konami");
+          setKonamiIndex(0);
+        }
       } else {
         setKonamiIndex(0);
       }
     };
     window.addEventListener("keydown", handle);
     return () => window.removeEventListener("keydown", handle);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [konamiIndex]);
 
   /* drag resize */
@@ -190,7 +233,11 @@ export default function Terminal() {
       }
     } else if (e.key === "Tab") {
       e.preventDefault();
-      if (suggestions.length > 0) { setCurrentInput(suggestions[0]); setSuggestions([]); setShowSuggestions(false); }
+      if (suggestions.length > 0) {
+        setCurrentInput(suggestions[0]);
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
     } else if (e.key === "Escape") {
       setShowSuggestions(false);
     }
@@ -198,8 +245,8 @@ export default function Terminal() {
 
   const handleCommand = (cmd: string) => {
     const parts = cmd.toLowerCase().trim().split(" ");
-    const main  = parts[0];
-    const args  = parts.slice(1);
+    const main = parts[0];
+    const args = parts.slice(1);
 
     if (cmd.trim()) {
       setCommandHistory((p) => [...p, cmd]);
@@ -213,10 +260,13 @@ export default function Terminal() {
       return;
     }
 
-    let output: string | JSX.Element = "Command not found. Type 'help' for available commands.";
+    let output: string | JSX.Element =
+      "Command not found. Type 'help' for available commands.";
 
     const accent = (s: string) => (
-      <span className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">{s}</span>
+      <span className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">
+        {s}
+      </span>
     );
 
     switch (main) {
@@ -227,19 +277,21 @@ export default function Terminal() {
               Available commands:
             </p>
             {[
-              ["help",       "Show this message"],
-              ["about",      "Navigate → about.tsx"],
-              ["projects",   "Navigate → projects.tsx"],
+              ["help", "Show this message"],
+              ["about", "Navigate → about.tsx"],
+              ["projects", "Navigate → projects.tsx"],
               ["experience", "Navigate → experience.tsx"],
-              ["contact",    "Navigate → contact.tsx"],
-              ["skills",     "List skill categories (try: skills backend)"],
-              ["theme",      "Toggle dark / light mode"],
-              ["view cv",    "Open resume in new tab"],
-              ["social",     "Print social links"],
-              ["history",    "Print command history"],
-              ["clear",      "Clear terminal"],
+              ["contact", "Navigate → contact.tsx"],
+              ["skills", "List skill categories (try: skills backend)"],
+              ["theme", "Toggle dark / light mode"],
+              ["view cv", "Open resume in new tab"],
+              ["social", "Print social links"],
+              ["history", "Print command history"],
+              ["clear", "Clear terminal"],
             ].map(([c, d]) => (
-              <p key={c}>{accent(c.padEnd(14, " "))}  {d}</p>
+              <p key={c}>
+                {accent(c.padEnd(14, " "))} {d}
+              </p>
             ))}
             <p className="mt-3 text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted text-[11px]">
               ↑/↓ history · Tab autocomplete · Easter eggs hidden 🥚
@@ -248,10 +300,22 @@ export default function Terminal() {
         );
         break;
 
-      case "about":      output = "Navigating to about.tsx…";      navigate("/");           break;
-      case "projects":   output = "Navigating to projects.tsx…";   navigate("/projects");   break;
-      case "experience": output = "Navigating to experience.tsx…"; navigate("/experience"); break;
-      case "contact":    output = "Navigating to contact.tsx…";    navigate("/contact");    break;
+      case "about":
+        output = "Navigating to about.tsx…";
+        navigate("/");
+        break;
+      case "projects":
+        output = "Navigating to projects.tsx…";
+        navigate("/projects");
+        break;
+      case "experience":
+        output = "Navigating to experience.tsx…";
+        navigate("/experience");
+        break;
+      case "contact":
+        output = "Navigating to contact.tsx…";
+        navigate("/contact");
+        break;
 
       case "skills":
         if (args.length && args[0] in SKILLS) {
@@ -260,7 +324,9 @@ export default function Terminal() {
             <div>
               <p className="mb-1 font-semibold capitalize">{cat} skills:</p>
               <ul className="list-disc pl-5">
-                {SKILLS[cat].map((s) => <li key={s}>{s}</li>)}
+                {SKILLS[cat].map((s) => (
+                  <li key={s}>{s}</li>
+                ))}
               </ul>
             </div>
           );
@@ -269,7 +335,9 @@ export default function Terminal() {
             <div>
               <p className="mb-1 font-semibold">Skill categories:</p>
               <ul className="list-disc pl-5">
-                {Object.keys(SKILLS).map((c) => <li key={c}>{accent(c)}</li>)}
+                {Object.keys(SKILLS).map((c) => (
+                  <li key={c}>{accent(c)}</li>
+                ))}
               </ul>
             </div>
           );
@@ -284,8 +352,9 @@ export default function Terminal() {
       case "view":
         if (args[0] === "cv") {
           window.open(
-            "https://docs.google.com/document/d/1E0Aov4wXCu_qHufc6hvh46haPer1P6C0P2gezeVmlJA/edit?usp=sharing",
-            "_blank", "noopener,noreferrer"
+            "https://docs.google.com/document/d/1Yt6xEsv3m1rpeyrrky9c6DvMK1aP2VD6StJFdsD_B2Q/edit?usp=sharing",
+            "_blank",
+            "noopener,noreferrer",
           );
           output = "Opening resume in a new tab…";
         } else {
@@ -304,15 +373,22 @@ export default function Terminal() {
               Connect with Isaac:
             </p>
             {[
-              ["GitHub",   "https://github.com/dexnis8",             "github.com/dexnis8"],
-              ["LinkedIn", "https://linkedin.com/in/isaac-ayorinde", "linkedin.com/in/isaac-ayorinde"],
-              ["X",        "https://x.com/dexnis8",                  "x.com/dexnis8"],
+              ["GitHub", "https://github.com/dexnis8", "github.com/dexnis8"],
+              [
+                "LinkedIn",
+                "https://linkedin.com/in/isaac-ayorinde",
+                "linkedin.com/in/isaac-ayorinde",
+              ],
+              ["X", "https://x.com/dexnis8", "x.com/dexnis8"],
             ].map(([label, href, text]) => (
               <p key={label}>
-                {accent(label + ":")}
-                {" "}
-                <a href={href} target="_blank" rel="noopener noreferrer"
-                   className="underline underline-offset-2 hover:text-kiro-accent dark:hover:text-kiro-accent light:hover:text-kiro-l-accent">
+                {accent(label + ":")}{" "}
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 hover:text-kiro-accent dark:hover:text-kiro-accent light:hover:text-kiro-l-accent"
+                >
                   {text}
                 </a>
               </p>
@@ -322,13 +398,16 @@ export default function Terminal() {
         break;
 
       case "history":
-        output = commandHistory.length === 0
-          ? "No history yet."
-          : (
+        output =
+          commandHistory.length === 0 ? (
+            "No history yet."
+          ) : (
             <div>
               <p className="mb-1 font-semibold">Command history:</p>
               <ol className="list-decimal pl-5">
-                {commandHistory.map((c, i) => <li key={i}>{c}</li>)}
+                {commandHistory.map((c, i) => (
+                  <li key={i}>{c}</li>
+                ))}
               </ol>
             </div>
           );
@@ -340,7 +419,10 @@ export default function Terminal() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (currentInput.trim()) { handleCommand(currentInput); setCurrentInput(""); }
+    if (currentInput.trim()) {
+      handleCommand(currentInput);
+      setCurrentInput("");
+    }
   };
 
   const isExpanded = terminalState !== "collapsed";
@@ -362,10 +444,14 @@ export default function Terminal() {
         {/* Left: terminal tabs */}
         <div className="flex items-center gap-3">
           {/* Tab label */}
-          <div className="flex items-center gap-1.5 border-b-2 border-kiro-accent pb-1
-                          dark:border-kiro-accent light:border-kiro-l-accent">
-            <FiTerminal size={12}
-              className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent" />
+          <div
+            className="flex items-center gap-1.5 border-b-2 border-kiro-accent pb-1
+                          dark:border-kiro-accent light:border-kiro-l-accent"
+          >
+            <FiTerminal
+              size={12}
+              className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent"
+            />
             <span className="text-[11px] text-kiro-text dark:text-kiro-text light:text-kiro-l-text">
               zsh
             </span>
@@ -373,7 +459,9 @@ export default function Terminal() {
 
           {/* New terminal icon */}
           <button
-            onClick={(e) => { e.stopPropagation(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
             className="text-kiro-muted hover:text-kiro-text transition-colors
                        dark:text-kiro-muted dark:hover:text-kiro-text
                        light:text-kiro-l-muted light:hover:text-kiro-l-text"
@@ -383,7 +471,10 @@ export default function Terminal() {
         </div>
 
         {/* Right: window controls */}
-        <div className="flex items-center gap-1" onMouseDown={(e) => e.stopPropagation()}>
+        <div
+          className="flex items-center gap-1"
+          onMouseDown={(e) => e.stopPropagation()}
+        >
           <button
             onClick={() => setCommands([])}
             title="Clear"
@@ -402,9 +493,11 @@ export default function Terminal() {
                          dark:text-kiro-muted dark:hover:text-kiro-text
                          light:text-kiro-l-muted light:hover:text-kiro-l-text"
             >
-              {terminalState === "maximized"
-                ? <FiMinimize2 size={12} />
-                : <FiMaximize2 size={12} />}
+              {terminalState === "maximized" ? (
+                <FiMinimize2 size={12} />
+              ) : (
+                <FiMaximize2 size={12} />
+              )}
             </button>
           )}
 
@@ -415,7 +508,11 @@ export default function Terminal() {
                        dark:text-kiro-muted dark:hover:text-kiro-text
                        light:text-kiro-l-muted light:hover:text-kiro-l-text"
           >
-            {isExpanded ? <FiChevronDown size={12} /> : <FiChevronUp size={12} />}
+            {isExpanded ? (
+              <FiChevronDown size={12} />
+            ) : (
+              <FiChevronUp size={12} />
+            )}
           </button>
         </div>
       </div>
@@ -427,7 +524,10 @@ export default function Terminal() {
           onClick={() => inputRef.current?.focus()}
         >
           {/* Output history */}
-          <div ref={terminalRef} className="flex-1 overflow-auto pb-2 space-y-2.5">
+          <div
+            ref={terminalRef}
+            className="flex-1 overflow-auto pb-2 space-y-2.5"
+          >
             {commands.map((cmd, i) => (
               <div key={i}>
                 {cmd.input && (
@@ -436,8 +536,12 @@ export default function Terminal() {
                     <span className="select-none text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">
                       isaac
                     </span>
-                    <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">@portfolio</span>
-                    <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">$</span>
+                    <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">
+                      @portfolio
+                    </span>
+                    <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">
+                      $
+                    </span>
                     <span className="text-kiro-text dark:text-kiro-text light:text-kiro-l-text">
                       {cmd.input}
                     </span>
@@ -460,8 +564,12 @@ export default function Terminal() {
               <span className="select-none text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">
                 isaac
               </span>
-              <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">@portfolio</span>
-              <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">$</span>
+              <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">
+                @portfolio
+              </span>
+              <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">
+                $
+              </span>
               <input
                 ref={inputRef}
                 type="text"
@@ -481,10 +589,12 @@ export default function Terminal() {
 
             {/* Autocomplete dropdown */}
             {showSuggestions && suggestions.length > 0 && (
-              <div className="absolute bottom-full left-0 mb-1 max-h-40 w-56 overflow-y-auto
+              <div
+                className="absolute bottom-full left-0 mb-1 max-h-40 w-56 overflow-y-auto
                               rounded border border-kiro-border bg-kiro-surface shadow-lg
                               dark:border-kiro-border dark:bg-kiro-surface
-                              light:border-kiro-l-border light:bg-kiro-l-surface">
+                              light:border-kiro-l-border light:bg-kiro-l-surface"
+              >
                 {suggestions.map((s) => (
                   <div
                     key={s}

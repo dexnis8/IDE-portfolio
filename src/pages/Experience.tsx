@@ -29,119 +29,71 @@ interface Education {
 }
 
 class Career {
+private roles: Role[] = [
+  {
+    title:    "Backend Engineer",
+    company:  "Design Tek Empire - Verified Fintech",
+    location: "Lagos, Nigeria (Remote)",
+    period:   "Feb 2026 – Present",
 
-  private roles: Role[] = [
-    {
-      title:    "Senior Full-Stack Engineer",
-      company:  "Fintech Scale-Up (Remote)",
-      location: "Remote",
-      period:   "2023 – Present",
+    responsibilities: [
+      "Built a secure crypto-to-fiat payment service using the Quidax API, implementing idempotent transaction handling",
+      "Developed the backend for internal Naira transfers with Monnify, integrating webhooks and signature verification",
+      "Engineered decentralized token swap functionality using Uniswap v4 for secure on-chain crypto exchanges",
+      "Developed a secure wallet management service with Turnkey, automating wallet creation while abstracting private key management",
+      "Improved payment reliability through asynchronous job queues, retry mechanisms, and structured logging",
+      "Increased backend quality through rate limiting and comprehensive unit/integration testing of payment services",
+    ],
 
-      responsibilities: [
-        "Architected event-driven payment microservices handling 18,000 TPS",
-        "Led migration from MongoDB → PostgreSQL for relational query performance",
-        "Implemented CQRS + Kafka event bus — eliminated duplicate charge incidents",
-        "Introduced blue/green ECS deployments; zero downtime releases since Q1 2024",
-        "Mentored 4 mid-level engineers; conducted weekly architecture reviews",
-        "Defined SLOs and built Prometheus/Grafana observability stack from scratch",
-      ],
+    stack: [
+      ".NET", "Quidax API", "Monnify", 
+      "Uniswap v4", "Turnkey", "JWT",
+    ],
+  },
 
-      stack: [
-        "Node.js", "Go", "PostgreSQL", "Redis",
-        "Kafka", "Docker", "Kubernetes", "AWS ECS",
-        "Terraform", "Prometheus", "Grafana",
-      ],
-    },
+  {
+    title:    "Backend Engineer",
+    company:  "Openfair Technologies",
+    location: "San Francisco, CA (Remote)",
+    period:   "April 2025 – March 2026",
 
-    {
-      title:    "Full-Stack Engineer",
-      company:  "SaaS Analytics Company",
-      location: "Lagos, Nigeria",
-      period:   "2022 – 2023",
+    responsibilities: [
+      "Architected a Redis-backed hourly TTL cache for a BigQuery-backed API serving over 5,000 requests per minute",
+      "Led the migration from a legacy BigQuery architecture to a real-time backend powered by Convex DB and Clerk Authentication",
+      "Developed an automated web scraping pipeline with custom deduplication logic generating more than 500 qualified leads weekly",
+      "Built Stripe webhook integrations with Airtable to synchronize subscription status in real time and automate customer outreach",
+    ],
 
-      responsibilities: [
-        "Rebuilt ETL pipeline in Go — dashboard freshness improved from 40 min → 8 s",
-        "Migrated OLAP layer from Redshift to ClickHouse; 34% infra cost reduction",
-        "Designed AWS Kinesis fan-out architecture for real-time event ingestion",
-        "Built dead-letter queue system eliminating data loss on pipeline failures",
-        "Delivered React/TypeScript dashboard consumed by 5,000+ business users",
-      ],
+    stack: [
+      "Node.js", "TypeScript", "Redis",
+      "BigQuery", "Convex DB", "Clerk",
+      "Stripe", "Airtable", "Playwright",
+    ],
+  },
 
-      stack: [
-        "Go", "React", "TypeScript", "ClickHouse",
-        "AWS Kinesis", "Redshift", "Terraform",
-        "GitHub Actions", "ArgoCD",
-      ],
-    },
+  {
+    title:    "Backend Developer",
+    company:  "Feexet",
+    location: "Abuja, Nigeria (Remote)",
+    period:   "Sept 2023 – Feb 2025",
 
-    {
-      title:    "Software Engineer",
-      company:  "Product Agency",
-      location: "Lagos, Nigeria",
-      period:   "2020 – 2022",
+    responsibilities: [
+      "Built a real-time messaging service using Node.js, Socket.io, and Redis for Teacher Bank App",
+      "Developed secure REST APIs with authentication, Cloudinary-powered file uploads, and Google Maps integration",
+      "Engineered backend services for CleenSweep App, implementing issue reporting, media uploads, approval workflows, scheduling, notifications, and rewards",
+      "Contributed to the CleenSweep administrative dashboard by building APIs for issue moderation, operational coordination, and user management",
+      "Designed and implemented the complete backend architecture for Tractrac App, including location-based tractor discovery, leasing workflows, and core business logic",
+      "Developed asynchronous background jobs using BullMQ to automate scheduled operations and notification delivery",
+    ],
 
-      responsibilities: [
-        "Developed full-stack web applications for 8+ client products",
-        "Built RESTful and GraphQL APIs serving mobile and web clients",
-        "Integrated Web3/Solidity smart contracts with React frontends",
-        "Improved test coverage from 30% → 88% across critical service paths",
-        "Collaborated with design team to ship pixel-perfect, accessible UIs",
-      ],
-
-      stack: [
-        "Node.js", "React", "Python", "Django",
-        "PostgreSQL", "MongoDB", "Solidity", "GraphQL",
-        "Docker", "GCP",
-      ],
-    },
-  ];
-
-  private education: Education[] = [
-    {
-      degree:      "B.Sc. Computer Science",
-      institution: "University of Lagos",
-      location:    "Lagos, Nigeria",
-      period:      "2016 – 2020",
-      highlights: [
-        "Second Class Upper Honours",
-        "Final-year thesis: Scalable Consensus Mechanisms for Permissioned Blockchains",
-        "Led university Programming & Algorithms Society (2 years)",
-      ],
-    },
-  ];
-
-  public summary(): string {
-    const rolesOutput = this.roles.map((r) => \`
-┌─────────────────────────────────────────────────┐
-  \${r.title}
-  \${r.company} · \${r.location}
-  \${r.period}
-└─────────────────────────────────────────────────┘
-
-  Responsibilities:
-\${r.responsibilities.map((x) => \`    ▸ \${x}\`).join("\\n")}
-
-  Stack:  \${r.stack.join(" · ")}
-\`).join("\\n");
-
-    const eduOutput = this.education.map((e) => \`
-  \${e.degree}
-  \${e.institution} · \${e.location} · \${e.period}
-\${e.highlights.map((h) => \`    • \${h}\`).join("\\n")}
-\`).join("\\n");
-
-    return \`
-╔═══════════════════════════════════════════════════╗
-║           ISAAC AYORINDE — CAREER HISTORY         ║
-╚═══════════════════════════════════════════════════╝
-
-── WORK EXPERIENCE ─────────────────────────────────
-\${rolesOutput}
-
-── EDUCATION ───────────────────────────────────────
-\${eduOutput}
-\`;
-  }
+    stack: [
+      "Node.js", "Express.js", "Socket.io",
+      "Redis", "MySQL", "BullMQ",
+      "Cloudinary", "Google Maps API",
+      "JWT", "REST API",
+    ],
+  },
+];
 }
 
 const career = new Career();
@@ -159,18 +111,18 @@ export default function Experience() {
         defaultValue={experienceCode}
         theme={theme === "dark" ? "vs-dark" : "vs"}
         options={{
-          readOnly:             true,
-          minimap:              { enabled: true },
-          fontSize:             13,
-          lineHeight:           22,
-          lineNumbers:          "on",
+          readOnly: true,
+          minimap: { enabled: true },
+          fontSize: 13,
+          lineHeight: 22,
+          lineNumbers: "on",
           scrollBeyondLastLine: false,
-          wordWrap:             "on",
-          automaticLayout:      true,
-          fontFamily:           "'Fira Code', 'JetBrains Mono', monospace",
-          fontLigatures:        true,
-          renderLineHighlight:  "gutter",
-          padding:              { top: 16, bottom: 16 },
+          wordWrap: "on",
+          automaticLayout: true,
+          fontFamily: "'Fira Code', 'JetBrains Mono', monospace",
+          fontLigatures: true,
+          renderLineHighlight: "gutter",
+          padding: { top: 16, bottom: 16 },
         }}
       />
     </div>
