@@ -1,118 +1,87 @@
+/**
+ * Terminal.tsx — Kiro IDE integrated terminal
+ * Kiro purple/dark palette. Draggable resize handle. Full command set.
+ */
+
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 import { useTerminal } from "../../context/TerminalContext";
 import {
-  FaChevronDown,
-  FaChevronUp,
-  FaExpand,
-  FaCompress,
-  FaEye,
-} from "react-icons/fa";
-// import { RiTwitterXFill } from "react-icons/ri";
+  FiChevronDown,
+  FiChevronUp,
+  FiMaximize2,
+  FiMinimize2,
+  FiTerminal,
+  FiPlus,
+  FiTrash2,
+} from "react-icons/fi";
 
 interface Command {
   input: string;
   output: string | JSX.Element;
 }
 
-// Skills data
+/* ─── Skills data (updated to match LandingPage) ──────────────────────── */
 const SKILLS = {
-  frontend: [
-    "React",
-    "TypeScript",
-    "JavaScript",
-    "HTML5",
-    "CSS3",
-    "Tailwind CSS",
-    "Redux",
-  ],
-  backend: [
-    "Node.js",
-    "Express",
-    "Python",
-    "Django",
-    "GraphQL",
-    "RESTful APIs",
-  ],
-  database: ["MongoDB", "PostgreSQL", "MySQL", "Firebase"],
-  devops: ["Docker", "Git", "CI/CD", "AWS", "Vercel", "Netlify"],
-  tools: ["VS Code", "Figma", "Postman", "Jest", "Webpack"],
+  backend:    ["Node.js", "Go", "Python", "Express", "Fastify", "gRPC", "GraphQL"],
+  frontend:   ["React", "TypeScript", "Next.js", "Tailwind CSS", "Framer Motion"],
+  database:   ["PostgreSQL", "Redis", "ClickHouse", "MongoDB", "MySQL"],
+  devops:     ["Docker", "Kubernetes", "Terraform", "AWS", "GitHub Actions", "ArgoCD"],
+  tools:      ["NGINX", "Kafka", "Prometheus", "Grafana", "Elasticsearch"],
 };
 
-// Easter egg matrix animation
-const MatrixAnimation = () => {
-  return (
-    <div className="font-mono text-xs text-green-500">
-      {Array.from({ length: 10 }).map((_, i) => (
-        <div key={i} className="my-0.5">
-          {Array.from({ length: Math.floor(Math.random() * 30) + 10 }).map(
-            (_, j) => (
-              <span key={j}>{Math.random() > 0.5 ? "1" : "0"}</span>
-            )
-          )}
-        </div>
-      ))}
-      <div className="mt-2 text-white">
-        Matrix mode activated. Welcome to the digital realm.
+/* ─── Easter eggs ─────────────────────────────────────────────────────── */
+const MatrixAnimation = () => (
+  <div className="font-mono text-xs text-kiro-success dark:text-kiro-success light:text-kiro-l-success">
+    {Array.from({ length: 8 }).map((_, i) => (
+      <div key={i} className="my-0.5 opacity-80">
+        {Array.from({ length: Math.floor(Math.random() * 28) + 8 }).map((_, j) => (
+          <span key={j}>{Math.random() > 0.5 ? "1" : "0"}</span>
+        ))}
       </div>
+    ))}
+    <div className="mt-2 text-kiro-text dark:text-kiro-text light:text-kiro-l-text">
+      Matrix mode activated. Welcome to the digital realm.
     </div>
-  );
+  </div>
+);
+
+const EASTER_EGGS: Record<string, string | JSX.Element> = {
+  sudo:   "Nice try. You don't have root in this browser.",
+  matrix: <MatrixAnimation />,
+  coffee: "Error: Coffee machine not found. Virtual ☕ incoming.",
+  hello:  "Hello there. Ready to build something great?",
+  ping:   "pong 🏓",
+  flip:   "(╯°□°）╯︵ ┻━┻",
+  unflip: "┬─┬ ノ( ゜-゜ノ)",
+  party:  "🎉 🎊 🎈 Let's ship it! 🚀",
+  joke:   "Why do engineers prefer dark mode? Because light attracts bugs.",
+  quote:  '"Move fast, but make things that last." — Unknown SRE',
+  konami: "⬆⬆⬇⬇⬅➡⬅➡ BA — Unlimited uptime unlocked! (not really)",
 };
 
-// Available commands for autocompletion (excluding easter eggs)
 const AVAILABLE_COMMANDS = [
-  "help",
-  "about",
-  "projects",
-  "experience",
-  "contact",
-  "skills",
-  "skills frontend",
-  "skills backend",
-  "skills database",
-  "skills devops",
-  "skills tools",
-  "theme",
-  "view cv",
-  "clear",
-  "social",
-  "history",
+  "help", "about", "projects", "experience", "contact",
+  "skills", "skills backend", "skills frontend", "skills database",
+  "skills devops", "skills tools",
+  "theme", "view cv", "clear", "social", "history",
 ];
 
-// Easter egg commands (hidden)
-const EASTER_EGGS = {
-  sudo: "Nice try! You don't have admin privileges in this browser.",
-  matrix: <MatrixAnimation />,
-  coffee:
-    "Error: Coffee machine not connected. Would you like some virtual coffee instead? ☕",
-  hello: "Hello there! Nice to meet you. How can I help you today?",
-  ping: "pong! 🏓",
-  flip: "(╯°□°）╯︵ ┻━┻",
-  unflip: "┬─┬ ノ( ゜-゜ノ)",
-  party: "🎉 🎊 🎈 🥳 Let's party! 🎵 🎶 💃 🕺",
-  joke: "Why do programmers prefer dark mode? Because light attracts bugs!",
-  quote: '"The best way to predict the future is to invent it." - Alan Kay',
-  easter:
-    "🥚 You found an Easter egg! There are several more hidden commands to discover...",
-  konami:
-    "⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️🅱️🅰️ - Cheat code activated! Unlimited power! (not really)",
-};
-
 export default function Terminal() {
-  const [commands, setCommands] = useState<Command[]>([]);
-  const [currentInput, setCurrentInput] = useState("");
+  const [commands, setCommands]           = useState<Command[]>([]);
+  const [currentInput, setCurrentInput]   = useState("");
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex]   = useState(-1);
+  const [suggestions, setSuggestions]     = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [konamiIndex, setKonamiIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
+  const [konamiIndex, setKonamiIndex]     = useState(0);
+  const [isDragging, setIsDragging]       = useState(false);
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  const terminalRef = useRef<HTMLDivElement>(null);
-  const dragStartYRef = useRef<number>(0);
-  const dragStartHeightRef = useRef<number>(0);
+  const inputRef        = useRef<HTMLInputElement>(null);
+  const terminalRef     = useRef<HTMLDivElement>(null);
+  const dragStartYRef   = useRef<number>(0);
+  const dragStartHRef   = useRef<number>(0);
 
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
@@ -124,472 +93,375 @@ export default function Terminal() {
     maximizeTerminal,
   } = useTerminal();
 
-  // Konami code sequence
   const konamiCode = [
-    "ArrowUp",
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowLeft",
-    "ArrowRight",
-    "b",
-    "a",
+    "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
+    "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a",
   ];
 
+  /* auto-scroll */
   useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    }
+    terminalRef.current?.scrollTo({ top: terminalRef.current.scrollHeight });
   }, [commands]);
 
-  // Display welcome message on component mount
+  /* welcome message */
   useEffect(() => {
-    setCommands([
-      {
-        input: "help",
-        output: "Welcome! Type 'help' to see available commands.",
-      },
-    ]);
+    setCommands([{
+      input: "",
+      output: (
+        <span className="text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">
+          Welcome to <span className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">isaac-ayorinde</span> terminal.
+          Type <span className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">help</span> for available commands.
+        </span>
+      ),
+    }]);
   }, []);
 
-  // Update suggestions when input changes
+  /* suggestions */
   useEffect(() => {
     if (currentInput.trim()) {
-      const matchedCommands = AVAILABLE_COMMANDS.filter((cmd) =>
-        cmd.startsWith(currentInput.toLowerCase())
+      setSuggestions(
+        AVAILABLE_COMMANDS.filter((c) => c.startsWith(currentInput.toLowerCase()))
       );
-      setSuggestions(matchedCommands);
     } else {
       setSuggestions([]);
     }
   }, [currentInput]);
 
-  // Listen for Konami code
+  /* konami listener */
   useEffect(() => {
-    const handleGlobalKeydown = (e: KeyboardEvent) => {
+    const handle = (e: KeyboardEvent) => {
       if (e.key === konamiCode[konamiIndex]) {
-        const nextIndex = konamiIndex + 1;
-        setKonamiIndex(nextIndex);
-
-        if (nextIndex === konamiCode.length) {
-          // Konami code completed!
-          handleCommand("konami");
-          setKonamiIndex(0);
-        }
+        const next = konamiIndex + 1;
+        setKonamiIndex(next);
+        if (next === konamiCode.length) { handleCommand("konami"); setKonamiIndex(0); }
       } else {
-        // Reset if wrong key pressed
         setKonamiIndex(0);
       }
     };
-
-    window.addEventListener("keydown", handleGlobalKeydown);
-    return () => window.removeEventListener("keydown", handleGlobalKeydown);
+    window.addEventListener("keydown", handle);
+    return () => window.removeEventListener("keydown", handle);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [konamiIndex]);
 
+  /* drag resize */
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      const delta = dragStartYRef.current - e.clientY;
+      setTerminalHeight(dragStartHRef.current + delta);
+    };
+    const onUp = () => setIsDragging(false);
+    if (isDragging) {
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener("mouseup", onUp);
+    }
+    return () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+    };
+  }, [isDragging, setTerminalHeight]);
+
+  const startDrag = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+    dragStartYRef.current = e.clientY;
+    dragStartHRef.current = terminalHeight;
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Handle arrow keys for command history navigation
     if (e.key === "ArrowUp") {
       e.preventDefault();
       setShowSuggestions(false);
       if (historyIndex < commandHistory.length - 1) {
-        const newIndex = historyIndex + 1;
-        setHistoryIndex(newIndex);
-        setCurrentInput(commandHistory[commandHistory.length - 1 - newIndex]);
+        const i = historyIndex + 1;
+        setHistoryIndex(i);
+        setCurrentInput(commandHistory[commandHistory.length - 1 - i]);
       }
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
       setShowSuggestions(false);
       if (historyIndex > 0) {
-        const newIndex = historyIndex - 1;
-        setHistoryIndex(newIndex);
-        setCurrentInput(commandHistory[commandHistory.length - 1 - newIndex]);
+        const i = historyIndex - 1;
+        setHistoryIndex(i);
+        setCurrentInput(commandHistory[commandHistory.length - 1 - i]);
       } else if (historyIndex === 0) {
         setHistoryIndex(-1);
         setCurrentInput("");
       }
-    }
-    // Handle Tab key for autocompletion
-    else if (e.key === "Tab") {
+    } else if (e.key === "Tab") {
       e.preventDefault();
-      if (suggestions.length > 0) {
-        setCurrentInput(suggestions[0]);
-        setSuggestions([]);
-        setShowSuggestions(false);
-      }
-    }
-    // Show suggestions on Ctrl+Space
-    else if (e.key === " " && e.ctrlKey) {
-      e.preventDefault();
-      setShowSuggestions(true);
-    }
-    // Hide suggestions on Escape
-    else if (e.key === "Escape") {
+      if (suggestions.length > 0) { setCurrentInput(suggestions[0]); setSuggestions([]); setShowSuggestions(false); }
+    } else if (e.key === "Escape") {
       setShowSuggestions(false);
     }
   };
 
   const handleCommand = (cmd: string) => {
-    const commandParts = cmd.toLowerCase().trim().split(" ");
-    const mainCommand = commandParts[0];
-    const args = commandParts.slice(1);
-    let output: string | JSX.Element =
-      "Command not found. Type 'help' for available commands.";
+    const parts = cmd.toLowerCase().trim().split(" ");
+    const main  = parts[0];
+    const args  = parts.slice(1);
 
-    // Add command to history
-    if (cmd.trim() !== "") {
-      setCommandHistory((prev) => [...prev, cmd]);
+    if (cmd.trim()) {
+      setCommandHistory((p) => [...p, cmd]);
       setHistoryIndex(-1);
     }
-
-    // Hide suggestions
     setShowSuggestions(false);
 
-    // Check for easter eggs first
-    if (mainCommand in EASTER_EGGS) {
-      output = EASTER_EGGS[mainCommand as keyof typeof EASTER_EGGS];
-      setCommands((prev) => [...prev, { input: cmd, output }]);
+    /* easter eggs */
+    if (main in EASTER_EGGS) {
+      setCommands((p) => [...p, { input: cmd, output: EASTER_EGGS[main] }]);
       return;
     }
 
-    // Basic commands
-    switch (mainCommand) {
+    let output: string | JSX.Element = "Command not found. Type 'help' for available commands.";
+
+    const accent = (s: string) => (
+      <span className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">{s}</span>
+    );
+
+    switch (main) {
       case "help":
         output = (
           <div className="space-y-1">
-            <p className="font-medium">Available commands:</p>
-            <p>
-              <span className="text-editor-accent-primary">help</span> - Display
-              available commands
+            <p className="mb-2 font-semibold text-kiro-text dark:text-kiro-text light:text-kiro-l-text">
+              Available commands:
             </p>
-            <p>
-              <span className="text-editor-accent-primary">about</span> -
-              Navigate to About page
+            {[
+              ["help",       "Show this message"],
+              ["about",      "Navigate → about.tsx"],
+              ["projects",   "Navigate → projects.tsx"],
+              ["experience", "Navigate → experience.tsx"],
+              ["contact",    "Navigate → contact.tsx"],
+              ["skills",     "List skill categories (try: skills backend)"],
+              ["theme",      "Toggle dark / light mode"],
+              ["view cv",    "Open resume in new tab"],
+              ["social",     "Print social links"],
+              ["history",    "Print command history"],
+              ["clear",      "Clear terminal"],
+            ].map(([c, d]) => (
+              <p key={c}>{accent(c.padEnd(14, " "))}  {d}</p>
+            ))}
+            <p className="mt-3 text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted text-[11px]">
+              ↑/↓ history · Tab autocomplete · Easter eggs hidden 🥚
             </p>
-            <p>
-              <span className="text-editor-accent-primary">projects</span> -
-              Navigate to Projects page
-            </p>
-            <p>
-              <span className="text-editor-accent-primary">experience</span> -
-              Navigate to Experience page
-            </p>
-            <p>
-              <span className="text-editor-accent-primary">contact</span> -
-              Navigate to Contact page
-            </p>
-            <p>
-              <span className="text-editor-accent-primary">skills</span> -
-              Display skills (try 'skills frontend', 'skills backend', etc.)
-            </p>
-            <p>
-              <span className="text-editor-accent-primary">theme</span> - Toggle
-              dark/light theme
-            </p>
-            <p>
-              <span className="text-editor-accent-primary flex items-center gap-1">
-                view cv <FaEye className="inline-block" size={12} />
-              </span>{" "}
-              - View my CV/resume
-            </p>
-            <p>
-              <span className="text-editor-accent-primary">clear</span> - Clear
-              terminal history
-            </p>
-            <p>
-              <span className="text-editor-accent-primary">social</span> -
-              Display social media links
-            </p>
-            <p>
-              <span className="text-editor-accent-primary">history</span> -
-              Display command history
-            </p>
-            <div className="mt-2 text-xs text-editor-text-secondary">
-              <p>Tips:</p>
-              <p>- Use up/down arrow keys to navigate command history</p>
-              <p>- Press Tab to autocomplete commands</p>
-              <p>- Press Ctrl+Space to show command suggestions</p>
-              <p>- There might be some hidden easter eggs... 🥚</p>
-            </div>
           </div>
         );
         break;
-      case "about":
-        output = "Navigating to About page...";
-        navigate("/");
-        break;
-      case "projects":
-        output = "Navigating to Projects page...";
-        navigate("/projects");
-        break;
-      case "experience":
-        output = "Navigating to Experience page...";
-        navigate("/experience");
-        break;
-      case "contact":
-        output = "Navigating to Contact page...";
-        navigate("/contact");
-        break;
+
+      case "about":      output = "Navigating to about.tsx…";      navigate("/");           break;
+      case "projects":   output = "Navigating to projects.tsx…";   navigate("/projects");   break;
+      case "experience": output = "Navigating to experience.tsx…"; navigate("/experience"); break;
+      case "contact":    output = "Navigating to contact.tsx…";    navigate("/contact");    break;
+
       case "skills":
-        if (args.length > 0 && args[0] in SKILLS) {
-          const category = args[0] as keyof typeof SKILLS;
+        if (args.length && args[0] in SKILLS) {
+          const cat = args[0] as keyof typeof SKILLS;
           output = (
             <div>
-              <p className="font-medium mb-1">My {category} skills:</p>
+              <p className="mb-1 font-semibold capitalize">{cat} skills:</p>
               <ul className="list-disc pl-5">
-                {SKILLS[category].map((skill, index) => (
-                  <li key={index}>{skill}</li>
-                ))}
+                {SKILLS[cat].map((s) => <li key={s}>{s}</li>)}
               </ul>
             </div>
           );
         } else {
           output = (
-            <div className="space-y-2">
-              <p className="font-medium">My skills by category:</p>
-              <p>
-                Type{" "}
-                <span className="text-editor-accent-primary">
-                  skills [category]
-                </span>{" "}
-                to see specific skills.
-              </p>
-              <p>Available categories:</p>
+            <div>
+              <p className="mb-1 font-semibold">Skill categories:</p>
               <ul className="list-disc pl-5">
-                {Object.keys(SKILLS).map((category, index) => (
-                  <li key={index}>{category}</li>
-                ))}
+                {Object.keys(SKILLS).map((c) => <li key={c}>{accent(c)}</li>)}
               </ul>
             </div>
           );
         }
         break;
+
       case "theme":
         toggleTheme();
-        output = `Theme switched to ${theme === "dark" ? "light" : "dark"} mode.`;
+        output = `Switched to ${theme === "dark" ? "light" : "dark"} mode.`;
         break;
-      case "download":
+
       case "view":
-        if (args.length > 0 && args[0] === "cv") {
-          // Open CV in a new tab
-          const link = document.createElement("a");
-          link.href =
-            "https://docs.google.com/document/d/1E0Aov4wXCu_qHufc6hvh46haPer1P6C0P2gezeVmlJA/edit?usp=sharing";
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-          link.click();
-          output = "Opening CV in a new tab...";
+        if (args[0] === "cv") {
+          window.open(
+            "https://docs.google.com/document/d/1E0Aov4wXCu_qHufc6hvh46haPer1P6C0P2gezeVmlJA/edit?usp=sharing",
+            "_blank", "noopener,noreferrer"
+          );
+          output = "Opening resume in a new tab…";
         } else {
-          output = "Please specify what to view. Try 'view cv'";
+          output = "Usage: view cv";
         }
         break;
+
       case "clear":
         setCommands([]);
         return;
+
       case "social":
         output = (
-          <div className="space-y-2">
-            <p className="font-medium">Connect with me:</p>
-            <p>
-              <span className="text-editor-accent-primary">GitHub:</span>{" "}
-              <a
-                href="https://github.com/dexnis8"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-editor-accent-primary"
-              >
-                github.com/dexnis8
-              </a>
+          <div className="space-y-1">
+            <p className="font-semibold text-kiro-text dark:text-kiro-text light:text-kiro-l-text">
+              Connect with Isaac:
             </p>
-            <p>
-              <span className="text-editor-accent-primary">LinkedIn:</span>{" "}
-              <a
-                href="https://linkedin.com/in/isaac-ayorinde"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-editor-accent-primary"
-              >
-                linkedin.com/in/isaac-ayorinde
-              </a>
-            </p>
-            <p>
-              <span className="text-editor-accent-primary">X (Twitter):</span>{" "}
-              <a
-                href="https://x.com/dexnis8"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-editor-accent-primary"
-              >
-                x.com/dexnis8
-              </a>
-            </p>
+            {[
+              ["GitHub",   "https://github.com/dexnis8",             "github.com/dexnis8"],
+              ["LinkedIn", "https://linkedin.com/in/isaac-ayorinde", "linkedin.com/in/isaac-ayorinde"],
+              ["X",        "https://x.com/dexnis8",                  "x.com/dexnis8"],
+            ].map(([label, href, text]) => (
+              <p key={label}>
+                {accent(label + ":")}
+                {" "}
+                <a href={href} target="_blank" rel="noopener noreferrer"
+                   className="underline underline-offset-2 hover:text-kiro-accent dark:hover:text-kiro-accent light:hover:text-kiro-l-accent">
+                  {text}
+                </a>
+              </p>
+            ))}
           </div>
         );
         break;
+
       case "history":
-        if (commandHistory.length === 0) {
-          output = "No command history available.";
-        } else {
-          output = (
+        output = commandHistory.length === 0
+          ? "No history yet."
+          : (
             <div>
-              <p className="font-medium mb-1">Command history:</p>
-              <ul className="list-disc pl-5">
-                {commandHistory.map((cmd, index) => (
-                  <li key={index}>{cmd}</li>
-                ))}
-              </ul>
+              <p className="mb-1 font-semibold">Command history:</p>
+              <ol className="list-decimal pl-5">
+                {commandHistory.map((c, i) => <li key={i}>{c}</li>)}
+              </ol>
             </div>
           );
-        }
-        break;
-      case "eastereggs":
-        // Easter egg that tells you there are easter eggs
-        output =
-          "Nice try! Find them yourself 😉 (Hint: Try common terminal commands, greetings, or gaming references)";
         break;
     }
 
-    setCommands((prev) => [...prev, { input: cmd, output }]);
+    setCommands((p) => [...p, { input: cmd, output }]);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (currentInput.trim()) {
-      handleCommand(currentInput);
-      setCurrentInput("");
-    }
+    if (currentInput.trim()) { handleCommand(currentInput); setCurrentInput(""); }
   };
 
-  const focusInput = () => {
-    inputRef.current?.focus();
-  };
-
-  // Handle suggestion click
-  const selectSuggestion = (suggestion: string) => {
-    setCurrentInput(suggestion);
-    setShowSuggestions(false);
-    inputRef.current?.focus();
-  };
-
-  // Handle drag to resize terminal
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging) return;
-
-      const deltaY = dragStartYRef.current - e.clientY;
-      const newHeight = dragStartHeightRef.current + deltaY;
-      setTerminalHeight(newHeight);
-    };
-
-    const handleMouseUp = () => {
-      setIsDragging(false);
-    };
-
-    if (isDragging) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isDragging, setTerminalHeight]);
-
-  const handleDragStart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-    dragStartYRef.current = e.clientY;
-    dragStartHeightRef.current = terminalHeight;
-  };
-
-  // Hide content when collapsed
-  const isContentVisible = terminalState !== "collapsed";
+  const isExpanded = terminalState !== "collapsed";
 
   return (
     <div
-      className="flex flex-col bg-editor-bg-terminal text-sm"
+      className="flex flex-col border-t border-kiro-border bg-kiro-workbench font-mono text-sm
+                 dark:border-kiro-border dark:bg-kiro-workbench
+                 light:border-kiro-l-border light:bg-kiro-l-workbench"
       style={{ height: terminalHeight }}
     >
-      {/* Terminal Header / Drag Handle */}
+      {/* ── Header / drag handle ───────────────────────────────────────── */}
       <div
-        className="flex items-center justify-between border-b border-editor-bg-secondary px-4 py-2 cursor-ns-resize select-none"
-        onMouseDown={handleDragStart}
+        className="flex flex-shrink-0 cursor-ns-resize select-none items-center justify-between
+                   border-b border-kiro-border px-3 py-1.5
+                   dark:border-kiro-border light:border-kiro-l-border"
+        onMouseDown={startDrag}
       >
-        <div className="flex items-center space-x-2 text-editor-text-secondary">
-          <div className="h-3 w-3 rounded-full bg-editor-accent-error"></div>
-          <div className="h-3 w-3 rounded-full bg-editor-accent-warning"></div>
-          <div className="h-3 w-3 rounded-full bg-editor-accent-success"></div>
-          <span className="ml-2">Terminal</span>
+        {/* Left: terminal tabs */}
+        <div className="flex items-center gap-3">
+          {/* Tab label */}
+          <div className="flex items-center gap-1.5 border-b-2 border-kiro-accent pb-1
+                          dark:border-kiro-accent light:border-kiro-l-accent">
+            <FiTerminal size={12}
+              className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent" />
+            <span className="text-[11px] text-kiro-text dark:text-kiro-text light:text-kiro-l-text">
+              zsh
+            </span>
+          </div>
+
+          {/* New terminal icon */}
+          <button
+            onClick={(e) => { e.stopPropagation(); }}
+            className="text-kiro-muted hover:text-kiro-text transition-colors
+                       dark:text-kiro-muted dark:hover:text-kiro-text
+                       light:text-kiro-l-muted light:hover:text-kiro-l-text"
+          >
+            <FiPlus size={13} />
+          </button>
         </div>
 
-        <div className="flex items-center space-x-2">
-          {terminalState === "collapsed" ? (
+        {/* Right: window controls */}
+        <div className="flex items-center gap-1" onMouseDown={(e) => e.stopPropagation()}>
+          <button
+            onClick={() => setCommands([])}
+            title="Clear"
+            className="rounded p-1 text-kiro-muted transition-colors hover:text-kiro-error
+                       dark:text-kiro-muted dark:hover:text-kiro-error
+                       light:text-kiro-l-muted light:hover:text-kiro-l-error"
+          >
+            <FiTrash2 size={12} />
+          </button>
+
+          {terminalState !== "collapsed" && (
             <button
-              onClick={toggleTerminal}
-              className="text-editor-text-secondary hover:text-editor-text-primary"
-              aria-label="Expand terminal"
+              onClick={maximizeTerminal}
+              title={terminalState === "maximized" ? "Restore" : "Maximise"}
+              className="rounded p-1 text-kiro-muted transition-colors hover:text-kiro-text
+                         dark:text-kiro-muted dark:hover:text-kiro-text
+                         light:text-kiro-l-muted light:hover:text-kiro-l-text"
             >
-              <FaChevronUp size={14} />
+              {terminalState === "maximized"
+                ? <FiMinimize2 size={12} />
+                : <FiMaximize2 size={12} />}
             </button>
-          ) : (
-            <>
-              <button
-                onClick={toggleTerminal}
-                className="text-editor-text-secondary hover:text-editor-text-primary"
-                aria-label="Collapse terminal"
-              >
-                <FaChevronDown size={14} />
-              </button>
-              {terminalState === "maximized" ? (
-                <button
-                  onClick={maximizeTerminal}
-                  className="text-editor-text-secondary hover:text-editor-text-primary"
-                  aria-label="Restore terminal"
-                >
-                  <FaCompress size={14} />
-                </button>
-              ) : (
-                <button
-                  onClick={maximizeTerminal}
-                  className="text-editor-text-secondary hover:text-editor-text-primary"
-                  aria-label="Maximize terminal"
-                >
-                  <FaExpand size={14} />
-                </button>
-              )}
-            </>
           )}
+
+          <button
+            onClick={toggleTerminal}
+            title={isExpanded ? "Collapse" : "Expand"}
+            className="rounded p-1 text-kiro-muted transition-colors hover:text-kiro-text
+                       dark:text-kiro-muted dark:hover:text-kiro-text
+                       light:text-kiro-l-muted light:hover:text-kiro-l-text"
+          >
+            {isExpanded ? <FiChevronDown size={12} /> : <FiChevronUp size={12} />}
+          </button>
         </div>
       </div>
 
-      {/* Terminal Content - Hidden when collapsed */}
-      {isContentVisible && (
+      {/* ── Content ────────────────────────────────────────────────────── */}
+      {isExpanded && (
         <div
-          className="flex h-full flex-col p-4 font-mono"
-          onClick={focusInput}
+          className="flex h-full flex-col px-4 py-2"
+          onClick={() => inputRef.current?.focus()}
         >
-          <div ref={terminalRef} className="flex-1 overflow-auto pb-2">
-            {commands.map((cmd, index) => (
-              <div key={index} className="mb-3">
-                <div className="flex items-center text-editor-accent-primary">
-                  <span className="mr-2">$</span>
-                  <span>{cmd.input}</span>
-                </div>
-                <div className="ml-4 text-editor-text-primary">
+          {/* Output history */}
+          <div ref={terminalRef} className="flex-1 overflow-auto pb-2 space-y-2.5">
+            {commands.map((cmd, i) => (
+              <div key={i}>
+                {cmd.input && (
+                  <div className="flex items-center gap-2">
+                    {/* Kiro-style prompt: user@host $ */}
+                    <span className="select-none text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">
+                      isaac
+                    </span>
+                    <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">@portfolio</span>
+                    <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">$</span>
+                    <span className="text-kiro-text dark:text-kiro-text light:text-kiro-l-text">
+                      {cmd.input}
+                    </span>
+                  </div>
+                )}
+                <div className="ml-0 mt-0.5 text-kiro-text/80 dark:text-kiro-text/80 light:text-kiro-l-text/80">
                   {cmd.output}
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="relative">
+          {/* Input row */}
+          <div className="relative flex-shrink-0">
             <form
               onSubmit={handleSubmit}
-              className="flex items-center border-t border-editor-bg-secondary pt-2"
+              className="flex items-center gap-2 border-t border-kiro-border pt-2
+                         dark:border-kiro-border light:border-kiro-l-border"
             >
-              <span className="mr-2 text-editor-accent-primary">$</span>
+              <span className="select-none text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">
+                isaac
+              </span>
+              <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">@portfolio</span>
+              <span className="select-none text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted">$</span>
               <input
                 ref={inputRef}
                 type="text"
@@ -597,23 +469,36 @@ export default function Terminal() {
                 onChange={(e) => setCurrentInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 onFocus={() => currentInput.trim() && setShowSuggestions(true)}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
-                className="flex-1 bg-transparent text-editor-text-primary outline-none"
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 120)}
+                className="flex-1 bg-transparent text-kiro-text outline-none caret-kiro-accent
+                           dark:text-kiro-text dark:caret-kiro-accent
+                           light:text-kiro-l-text light:caret-kiro-l-accent"
                 autoFocus
                 aria-label="Terminal input"
+                spellCheck={false}
               />
             </form>
 
-            {/* Command suggestions dropdown */}
+            {/* Autocomplete dropdown */}
             {showSuggestions && suggestions.length > 0 && (
-              <div className="absolute bottom-full left-7 mb-1 w-64 max-h-48 overflow-y-auto rounded bg-editor-bg-secondary shadow-lg">
-                {suggestions.map((suggestion, index) => (
+              <div className="absolute bottom-full left-0 mb-1 max-h-40 w-56 overflow-y-auto
+                              rounded border border-kiro-border bg-kiro-surface shadow-lg
+                              dark:border-kiro-border dark:bg-kiro-surface
+                              light:border-kiro-l-border light:bg-kiro-l-surface">
+                {suggestions.map((s) => (
                   <div
-                    key={index}
-                    className="cursor-pointer px-3 py-1.5 hover:bg-editor-accent-primary/20"
-                    onClick={() => selectSuggestion(suggestion)}
+                    key={s}
+                    className="cursor-pointer px-3 py-1.5 text-[12px] text-kiro-text
+                               hover:bg-kiro-elevated
+                               dark:text-kiro-text dark:hover:bg-kiro-elevated
+                               light:text-kiro-l-text light:hover:bg-kiro-l-elevated"
+                    onMouseDown={() => {
+                      setCurrentInput(s);
+                      setShowSuggestions(false);
+                      inputRef.current?.focus();
+                    }}
                   >
-                    {suggestion}
+                    {s}
                   </div>
                 ))}
               </div>

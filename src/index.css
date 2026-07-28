@@ -1,39 +1,93 @@
+/* ─── Google Fonts ──────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─── CSS Custom Properties (Kiro IDE palette) ───────────────────────────
+   Used wherever inline styles or non-Tailwind code needs theme tokens.
+   The .dark class is toggled on <html> by ThemeContext.
+─────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Dark defaults */
+  --kiro-workbench: #19161d;
+  --kiro-editor:    #211d25;
+  --kiro-surface:   #28242e;
+  --kiro-elevated:  #2f2b37;
+  --kiro-border:    #3a3543;
+  --kiro-text:      #ffffff;
+  --kiro-muted:     #938f9b;
+  --kiro-accent:    #b080ff;
+  --kiro-accent2:   #7138cc;
+  --kiro-success:   #80ffb5;
+  --kiro-error:     #ff8080;
+  --kiro-warning:   #ffcf99;
+}
+
+.light {
+  --kiro-workbench: #dcdadf;
+  --kiro-editor:    #f2f1f4;
+  --kiro-surface:   #eae8ed;
+  --kiro-elevated:  #e2dfe8;
+  --kiro-border:    #c8c5cf;
+  --kiro-text:      #352f3d;
+  --kiro-muted:     #938f9b;
+  --kiro-accent:    #7138cc;
+  --kiro-accent2:   #8e47ff;
+  --kiro-success:   #367c53;
+  --kiro-error:     #993333;
+  --kiro-warning:   #d08025;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
 @layer base {
+  html {
+    /* Prevent layout shift when scrollbar appears */
+    scrollbar-gutter: stable;
+  }
+
   body {
-    @apply bg-editor-bg-primary font-mono text-editor-text-primary antialiased;
+    @apply bg-kiro-workbench font-sans text-kiro-text antialiased;
   }
 
-  /* Custom scrollbar */
+  /* Landing page uses its own explicit background — no interference */
+
+  /* Scrollbar */
   ::-webkit-scrollbar {
-    @apply w-2;
+    @apply w-[5px] h-[5px];
   }
-
   ::-webkit-scrollbar-track {
-    @apply bg-editor-bg-secondary;
+    background: var(--kiro-surface);
   }
-
   ::-webkit-scrollbar-thumb {
-    @apply rounded bg-editor-accent-secondary hover:bg-editor-accent-primary;
+    background: var(--kiro-border);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--kiro-muted);
   }
 
-  /* Selection color */
+  /* Selection */
   ::selection {
-    @apply bg-editor-accent-primary/30 text-editor-text-primary;
+    background: color-mix(in srgb, var(--kiro-accent) 30%, transparent);
+    color: var(--kiro-text);
   }
 }
 
-/* Monaco Editor customizations */
-.monaco-editor .margin {
-  @apply bg-editor-bg-primary;
+/* ─── Utility: font-caveat ───────────────────────────────────────────────── */
+.font-caveat {
+  font-family: "Caveat", cursive;
 }
 
-.monaco-editor .minimap {
-  @apply opacity-50;
+/* ─── Monaco editor overrides ────────────────────────────────────────────── */
+.monaco-editor .margin {
+  background: var(--kiro-editor) !important;
+}
+.monaco-editor,
+.monaco-editor-background {
+  background: var(--kiro-editor) !important;
 }

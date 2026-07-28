@@ -12,6 +12,8 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@monaco-editor/react": "^4.6.0",
+    "baseline-browser-mapping": "^2.11.5",
+    "caniuse-lite": "^1.0.30001806",
     "framer-motion": "^10.18.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
