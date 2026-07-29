@@ -8,8 +8,8 @@ import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 
 interface ContactForm {
-  name:    string;
-  email:   string;
+  name: string;
+  email: string;
   message: string;
 }
 
@@ -25,7 +25,7 @@ interface Message {
 }
 
 const message: Message = {
-  from:   "${f.name  || "<your name>"}",
+  from:   "${f.name || "<your name>"}",
   email:  "${f.email || "<your email>"}",
   body:   "${f.message ? f.message.replace(/\n/g, "\\n") : "<your message>"}",
   sentAt: new Date(),
@@ -49,10 +49,18 @@ dispatch(message).catch(console.error);
 export default function Contact() {
   const { theme } = useTheme();
 
-  const [form, setForm]     = useState<ContactForm>({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [form, setForm] = useState<ContactForm>({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle",
+  );
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setForm((p) => ({ ...p, [name]: value }));
   };
@@ -84,25 +92,31 @@ export default function Contact() {
 
   return (
     <div className="grid h-full grid-cols-2 gap-0">
-
       {/* ── Form panel ──────────────────────────────────────────────── */}
-      <div className="flex flex-col overflow-y-auto border-r border-kiro-border
+      <div
+        className="flex flex-col overflow-y-auto border-r border-kiro-border
                       bg-kiro-editor p-8
                       dark:border-kiro-border dark:bg-kiro-editor
-                      light:border-kiro-l-border light:bg-kiro-l-editor">
-
+                      light:border-kiro-l-border light:bg-kiro-l-editor"
+      >
         {/* Header */}
         <div className="mb-6">
-          <p className="font-mono text-[11px] uppercase tracking-widest text-kiro-accent
-                        dark:text-kiro-accent light:text-kiro-l-accent">
+          <p
+            className="font-mono text-[11px] uppercase tracking-widest text-kiro-accent
+                        dark:text-kiro-accent light:text-kiro-l-accent"
+          >
             contact.tsx
           </p>
-          <h2 className="mt-1 font-sans text-xl font-semibold text-kiro-text
-                         dark:text-kiro-text light:text-kiro-l-text">
+          <h2
+            className="mt-1 font-sans text-xl font-semibold text-kiro-text
+                         dark:text-kiro-text light:text-kiro-l-text"
+          >
             Get in touch
           </h2>
-          <p className="mt-1.5 font-sans text-sm text-kiro-muted
-                        dark:text-kiro-muted light:text-kiro-l-muted">
+          <p
+            className="mt-1.5 font-sans text-sm text-kiro-muted
+                        dark:text-kiro-muted light:text-kiro-l-muted"
+          >
             Fill in the form — the Monaco editor on the right updates live.
           </p>
         </div>
@@ -110,16 +124,19 @@ export default function Contact() {
         {/* Contact meta */}
         <div className="mb-6 space-y-1.5">
           {[
-            ["Email",    "isaacayorinde442@gmail.com"],
-            ["Location", "Lagos, Nigeria"],
-            ["Status",   "Open to new opportunities"],
+            ["Email", "isaacayorinde442@gmail.com"],
+            ["Location", "Ibadan, Nigeria"],
+            ["Status", "Open to new opportunities"],
           ].map(([k, v]) => (
-            <p key={k} className="font-mono text-xs text-kiro-muted
-                                  dark:text-kiro-muted light:text-kiro-l-muted">
+            <p
+              key={k}
+              className="font-mono text-xs text-kiro-muted
+                                  dark:text-kiro-muted light:text-kiro-l-muted"
+            >
               <span className="text-kiro-accent dark:text-kiro-accent light:text-kiro-l-accent">
                 {k}:
-              </span>
-              {" "}{v}
+              </span>{" "}
+              {v}
             </p>
           ))}
         </div>
@@ -130,9 +147,13 @@ export default function Contact() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-1 flex-col gap-4">
           <div>
-            <label htmlFor="name" className={labelCls}>Name</label>
+            <label htmlFor="name" className={labelCls}>
+              Name
+            </label>
             <input
-              id="name" name="name" type="text"
+              id="name"
+              name="name"
+              type="text"
               value={form.name}
               onChange={handleChange}
               placeholder="Ada Lovelace"
@@ -142,9 +163,13 @@ export default function Contact() {
           </div>
 
           <div>
-            <label htmlFor="email" className={labelCls}>Email</label>
+            <label htmlFor="email" className={labelCls}>
+              Email
+            </label>
             <input
-              id="email" name="email" type="email"
+              id="email"
+              name="email"
+              type="email"
               value={form.email}
               onChange={handleChange}
               placeholder="ada@lovelace.dev"
@@ -154,9 +179,12 @@ export default function Contact() {
           </div>
 
           <div className="flex flex-1 flex-col">
-            <label htmlFor="message" className={labelCls}>Message</label>
+            <label htmlFor="message" className={labelCls}>
+              Message
+            </label>
             <textarea
-              id="message" name="message"
+              id="message"
+              name="message"
               value={form.message}
               onChange={handleChange}
               placeholder="I'd love to discuss..."
@@ -174,9 +202,11 @@ export default function Contact() {
                        dark:border-kiro-accent dark:bg-kiro-accent
                        light:border-kiro-l-accent light:bg-kiro-l-accent"
           >
-            {status === "sending" ? "Dispatching…" :
-             status === "sent"    ? "✓ Message sent!" :
-             "dispatch(message)"}
+            {status === "sending"
+              ? "Dispatching…"
+              : status === "sent"
+                ? "✓ Message sent!"
+                : "dispatch(message)"}
           </button>
 
           {status === "error" && (
@@ -195,18 +225,18 @@ export default function Contact() {
           value={baseCode(form)}
           theme={theme === "dark" ? "vs-dark" : "vs"}
           options={{
-            readOnly:             true,
-            minimap:              { enabled: false },
-            fontSize:             13,
-            lineHeight:           22,
-            lineNumbers:          "on",
+            readOnly: true,
+            minimap: { enabled: false },
+            fontSize: 13,
+            lineHeight: 22,
+            lineNumbers: "on",
             scrollBeyondLastLine: false,
-            wordWrap:             "on",
-            automaticLayout:      true,
-            fontFamily:           "'Fira Code', 'JetBrains Mono', monospace",
-            fontLigatures:        true,
-            renderLineHighlight:  "gutter",
-            padding:              { top: 16, bottom: 16 },
+            wordWrap: "on",
+            automaticLayout: true,
+            fontFamily: "'Fira Code', 'JetBrains Mono', monospace",
+            fontLigatures: true,
+            renderLineHighlight: "gutter",
+            padding: { top: 16, bottom: 16 },
           }}
         />
       </div>

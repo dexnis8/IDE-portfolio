@@ -9,7 +9,7 @@ import { useTheme } from "../context/ThemeContext";
 
 const aboutCode = `/**
  * about.ts — Isaac Ayorinde
- * Backend Engineer · Node.js · .NET · Express
+ * Full-Stack Engineer(Backend Focused) · Node.js · .NET · Express
  */
 
 interface Engineer {
@@ -28,7 +28,7 @@ const isaac: Engineer = {
   name:     "Isaac Ayorinde",
   title:    "Backend Engineer",
   location: "Ibadan, Nigeria",
-
+  
   focus: [
     "API design & engineering",
     "Real-time systems & WebSockets",

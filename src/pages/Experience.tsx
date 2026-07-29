@@ -33,7 +33,7 @@ private roles: Role[] = [
   {
     title:    "Backend Engineer",
     company:  "Design Tek Empire - Verified Fintech",
-    location: "Lagos, Nigeria (Remote)",
+    location: "Ibadan, Nigeria (Remote)",
     period:   "Feb 2026 – Present",
 
     responsibilities: [

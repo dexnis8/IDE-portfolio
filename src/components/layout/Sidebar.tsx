@@ -75,158 +75,162 @@ function ExplorerPanel() {
       </div>
 
       {/* Folder group */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 flex h-[100vh] flex-col justify-between">
         {/* PORTFOLIO folder */}
-        <button
-          onClick={() => setPortfolioOpen((v) => !v)}
-          className="flex w-full items-center gap-1 px-2 py-1.5 font-sans text-xs font-semibold
+        <div className="flex-1 overflow-y-auto">
+          <button
+            onClick={() => setPortfolioOpen((v) => !v)}
+            className="flex w-full items-center gap-1 px-2 py-1.5 font-sans text-xs font-semibold
                      text-kiro-muted uppercase tracking-wider transition-colors
                      hover:text-kiro-text
                      dark:text-kiro-muted dark:hover:text-kiro-text
                      light:text-kiro-l-muted light:hover:text-kiro-l-text"
-        >
-          {portfolioOpen ? (
-            <FiChevronDown size={12} />
-          ) : (
-            <FiChevronRight size={12} />
-          )}
-          isaac-ayorinde
-        </button>
+          >
+            {portfolioOpen ? (
+              <FiChevronDown size={12} />
+            ) : (
+              <FiChevronRight size={12} />
+            )}
+            isaac-ayorinde
+          </button>
 
-        {portfolioOpen && (
-          <ul className="pb-2">
-            {navItems.map((item) => {
-              const active = location.pathname === item.path;
-              return (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    className={`group flex items-center gap-2 px-6 py-[5px] font-mono text-[13px]
+          {portfolioOpen && (
+            <ul className="pb-2">
+              {navItems.map((item) => {
+                const active = location.pathname === item.path;
+                return (
+                  <li key={item.path}>
+                    <Link
+                      to={item.path}
+                      className={`group flex items-center gap-2 px-6 py-[5px] font-mono text-[13px]
                       transition-colors
                       ${
                         active
                           ? "bg-kiro-elevated text-kiro-text dark:bg-kiro-elevated dark:text-kiro-text light:bg-kiro-l-elevated light:text-kiro-l-text"
                           : "text-kiro-muted hover:bg-kiro-elevated/60 hover:text-kiro-text dark:text-kiro-muted dark:hover:bg-kiro-elevated/60 dark:hover:text-kiro-text light:text-kiro-l-muted light:hover:bg-kiro-l-elevated/60 light:hover:text-kiro-l-text"
                       }`}
-                  >
-                    <span className={item.lang}>{item.icon}</span>
-                    <span>{item.label}</span>
-                    {active && (
-                      <span
-                        className="ml-auto h-1.5 w-1.5 rounded-full bg-kiro-accent
+                    >
+                      <span className={item.lang}>{item.icon}</span>
+                      <span>{item.label}</span>
+                      {active && (
+                        <span
+                          className="ml-auto h-1.5 w-1.5 rounded-full bg-kiro-accent
                                        dark:bg-kiro-accent light:bg-kiro-l-accent"
-                      />
-                    )}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+                        />
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
 
-        {/* Divider */}
-        <div className="mx-4 my-2 border-t border-kiro-border dark:border-kiro-border light:border-kiro-l-border" />
+        <div className="flex-1 flex flex-col w-full justify-end overflow-y-auto self-end">
+          {/* Divider */}
+          <div className="mx-4 my-2 border-t border-kiro-border dark:border-kiro-border light:border-kiro-l-border" />
 
-        {/* Profile card */}
-        <div className="px-4 py-3">
-          <div className="flex items-center gap-3">
-            <div
-              className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-md border border-kiro-border
+          {/* Profile card */}
+          <div className="px-4 py-3">
+            <div className="flex items-center gap-3">
+              <div
+                className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-md border border-kiro-border
                             dark:border-kiro-border light:border-kiro-l-border"
-            >
-              <img
-                src="/isaac.jpg"
-                alt="Isaac Ayorinde"
-                className="h-full w-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.src =
-                    "https://ui-avatars.com/api/?name=Isaac+Ayorinde&background=7138cc&color=fff&size=80";
-                }}
-              />
-            </div>
-            <div className="min-w-0">
-              <p
-                className="truncate font-sans text-xs font-semibold text-kiro-text
+              >
+                <img
+                  src="/Isaac-dp.jpeg"
+                  alt="Isaac Ayorinde"
+                  className="h-full w-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src =
+                      "https://ui-avatars.com/api/?name=Isaac+Ayorinde&background=7138cc&color=fff&size=80";
+                  }}
+                />
+              </div>
+              <div className="min-w-0">
+                <p
+                  className="truncate font-sans text-xs font-semibold text-kiro-text
                             dark:text-kiro-text light:text-kiro-l-text"
-              >
-                Isaac Ayorinde
-              </p>
-              <p
-                className="truncate font-mono text-[10px] text-kiro-muted
+                >
+                  Isaac Ayorinde
+                </p>
+                <p
+                  className="truncate font-mono text-[10px] text-kiro-muted
                             dark:text-kiro-muted light:text-kiro-l-muted"
-              >
-                Senior Full-Stack Engineer
-              </p>
+                >
+                  Full-Stack Engineer
+                </p>
+              </div>
             </div>
-          </div>
 
-          {/* Location */}
-          <p
-            className="mt-2 font-mono text-[10px] text-kiro-muted
+            {/* Location */}
+            <p
+              className="mt-2 font-mono text-[10px] text-kiro-muted
                         dark:text-kiro-muted light:text-kiro-l-muted"
-          >
-            📍 Lagos, Nigeria
-          </p>
+            >
+              📍 Ibadan, Nigeria
+            </p>
 
-          {/* Resume link */}
-          <a
-            href="https://docs.google.com/document/d/1Yt6xEsv3m1rpeyrrky9c6DvMK1aP2VD6StJFdsD_B2Q/edit?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 flex w-full items-center justify-center gap-1.5 rounded
+            {/* Resume link */}
+            <a
+              href="https://docs.google.com/document/d/1Yt6xEsv3m1rpeyrrky9c6DvMK1aP2VD6StJFdsD_B2Q/edit?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 flex w-full items-center justify-center gap-1.5 rounded
                        border border-kiro-accent/40 py-1.5 font-mono text-[11px]
                        text-kiro-accent transition-colors
                        hover:bg-kiro-accent/10
                        dark:border-kiro-accent/40 dark:text-kiro-accent dark:hover:bg-kiro-accent/10
                        light:border-kiro-l-accent/40 light:text-kiro-l-accent light:hover:bg-kiro-l-accent/10"
-          >
-            <FiExternalLink size={11} />
-            View Resume
-          </a>
-        </div>
+            >
+              <FiExternalLink size={11} />
+              View Resume
+            </a>
+          </div>
 
-        {/* Divider */}
-        <div className="mx-4 my-2 border-t border-kiro-border dark:border-kiro-border light:border-kiro-l-border" />
+          {/* Divider */}
+          <div className="mx-4 my-2 border-t border-kiro-border dark:border-kiro-border light:border-kiro-l-border" />
 
-        {/* Social */}
-        <div className="px-4 pb-4">
-          <p
-            className="mb-2 font-sans text-[10px] font-semibold uppercase tracking-widest
+          {/* Social */}
+          <div className="px-4 pb-4">
+            <p
+              className="mb-2 font-sans text-[10px] font-semibold uppercase tracking-widest
                         text-kiro-muted dark:text-kiro-muted light:text-kiro-l-muted"
-          >
-            Connect
-          </p>
-          <div className="flex items-center gap-3">
-            {[
-              {
-                href: "https://github.com/dexnis8",
-                icon: <SiGithub size={16} />,
-                label: "GitHub",
-              },
-              {
-                href: "https://linkedin.com/in/isaac-ayorinde",
-                icon: <SiLinkedin size={16} />,
-                label: "LinkedIn",
-              },
-              {
-                href: "https://x.com/dexnis8",
-                icon: <RiTwitterXFill size={16} />,
-                label: "X",
-              },
-            ].map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.label}
-                className="text-kiro-muted transition-colors hover:text-kiro-accent
+            >
+              Connect
+            </p>
+            <div className="flex items-center gap-3">
+              {[
+                {
+                  href: "https://github.com/dexnis8",
+                  icon: <SiGithub size={16} />,
+                  label: "GitHub",
+                },
+                {
+                  href: "https://linkedin.com/in/isaac-ayorinde",
+                  icon: <SiLinkedin size={16} />,
+                  label: "LinkedIn",
+                },
+                {
+                  href: "https://x.com/dexnis8",
+                  icon: <RiTwitterXFill size={16} />,
+                  label: "X",
+                },
+              ].map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="text-kiro-muted transition-colors hover:text-kiro-accent
                            dark:text-kiro-muted dark:hover:text-kiro-accent
                            light:text-kiro-l-muted light:hover:text-kiro-l-accent"
-              >
-                {s.icon}
-              </a>
-            ))}
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>
