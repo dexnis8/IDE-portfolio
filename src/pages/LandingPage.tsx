@@ -90,7 +90,7 @@ const metrics = [
 const caseStudies = [
   {
     title: "BigQuery Cost & Latency Optimization",
-    tags: ["Node.js", "BigQuery", "Redis"],
+    tags: ["Node.js", "TypeScript", "BigQuery", "Redis"],
     date: "2025 – 2026",
     problem:
       "Growing platform traffic caused identical HTTP requests to repeatedly hit the database, increasing infrastructure costs and slowing API response times.",
@@ -104,7 +104,7 @@ const caseStudies = [
   },
   {
     title: "Serverless Web Scraping Engine",
-    tags: ["JavaScript", "GCP Functions", "PUPPETEER"],
+    tags: ["JavaScript", "TypeScript", "GCP Functions", "PUPPETEER"],
     date: "2022 – 2023",
     problem:
       "Manual market research and lead capture were bottlenecking growth and time consuming for marketing team leading to reduced productivity.",
